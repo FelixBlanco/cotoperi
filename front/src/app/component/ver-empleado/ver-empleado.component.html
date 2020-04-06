@@ -1,0 +1,93 @@
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-8">      
+      <h2 *ngIf="empleado" class="p-2 bg-white shadow rounded">
+        {{empleado.username}} <br>
+        <small *ngIf="empleado.ubicacion">{{empleado.ubicacion}}</small>
+      </h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-8">
+      <div class="row">
+        <div class="col-md-12">
+          <h4 class="p-2">Pagos</h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 col-md-6" *ngFor="let pago of pagos">
+          <div class="shadow bg-white rounded p-2">        
+            <h5 class="p-2">{{pago.titular}} - {{pago.monto}}Bs</h5>
+            <div><b>C. I.</b> {{pago.cedula}}</div> 
+            <div *ngIf="pago.nro"><b>Nro C.</b> {{pago.nro}} </div>
+            <div>{{pago.tipo}}</div> 
+            <div *ngIf="pago.telefono"><b>Telefono</b> {{pago.telefono}}  </div> 
+            <div *ngIf="pago.is_pago == '0'">Pendiente</div>
+            <div *ngIf="pago.is_pago == '1'">Listo</div>                        
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div>
+        <h4 class="p-2">Cuentas</h4>
+
+        <div>
+          <form [formGroup]="formCuentas">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="">Tipos</label>
+                  <select class="form-control" formControlName="tipo">
+                    <option *ngFor="let tipo of tipos" [value]="tipo.id">{{tipo.tipo}}</option>
+                  </select>
+                </div>   
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="">Titular</label>
+                  <input type="text" class="form-control" formControlName="titular">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="">Cedula de Identidad</label>
+                  <input type="text" class="form-control" formControlName="cedula">
+                </div>   
+              </div>
+              <div class="col-md-6">
+                <div class="form-group" *ngIf="formCuentas.get('tipo').value == 1">
+                  <label for="">Nro de Cuenta</label>
+                  <input type="text" class="form-control" formControlName="nro">
+                </div>    
+                <div class="form-group" *ngIf="formCuentas.get('tipo').value == 2">
+                  <label for="">Telefono</label>
+                  <input type="text" class="form-control" formControlName="telefono">
+                </div>
+              </div>                  
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <button (click)="newCuenta()" class="btn btn-success">Agregar</button>
+              </div>
+            </div>
+          </form>             
+        </div>
+
+        <ul class="list-group">
+          <li class="list-group-item bg-white" *ngFor="let cuenta of cuentas">
+            <h4 class="p-1">{{cuenta.titular}}</h4>
+            <p>
+              <span *ngIf="cuenta.cedula">{{cuenta.cedula}} <br></span> 
+              <span *ngIf="cuenta.nro">{{cuenta.nro}} <br></span>
+              <span *ngIf="cuenta.telefono">{{cuenta.telefono}} <br></span>    
+              <span *ngIf="cuenta.tipo">{{cuenta.tipo}}</span>
+            </p>
+          </li>
+        </ul>                
+      </div>      
+    </div>
+  </div>
+</div>

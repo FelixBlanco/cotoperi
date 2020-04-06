@@ -1,0 +1,32 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <h2 class="p-2">Pendientes por pagar</h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 col-md-4" *ngFor="let pagos_pendiente of pagos_pendientes">
+      <div class="shadow bg-white p-2 rounded mb-2">
+        <div class="row">
+          <div class="col-md-6"><h5 class="p-2">{{pagos_pendiente.username}}</h5></div>
+          <div class="col-md-6 text-right"><h5 class="p-2">{{pagos_pendiente.monto}}Bs</h5></div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <p>
+              <b>Titular</b> {{pagos_pendiente.titular}} <br>
+              <span *ngIf="pagos_pendiente.cedula"><b>C. I.</b> {{pagos_pendiente.cedula}}</span> <br>
+              <span *ngIf="pagos_pendiente.nro"><b>Nro</b> {{pagos_pendiente.nro}}</span>   
+              <span *ngIf="pagos_pendiente.telefono"><b>Telefono</b> {{pagos_pendiente.telefono}}</span>   
+            </p>    
+            <form [formGroup]="formCancela">
+              <div class="form-inline">
+                <input type="text" class="form-control" placeholder="codigo de transferencia" formControlName="code"> <button class="btn btn-success" (click)="codePago(pagos_pendiente.idPagos)">Listo</button>
+              </div>                  
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>    
+  </div>
+</div>

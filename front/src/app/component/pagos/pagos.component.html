@@ -1,0 +1,125 @@
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-8">
+
+      <div *ngIf="!newEmpleado" class="shadow bg-white p-4 rounded">
+        <label for="">Empleados</label>
+        <select class="form-control" [(ngModel)]="empleado_id" >
+          <option *ngFor="let empleado of empleados" [value]="empleado.id">{{empleado.username}}</option>
+        </select>
+      </div>
+            
+      <div *ngIf="newEmpleado" class="shadow bg-white p-4 rounded">
+        <h5 class="p-2">Nuevo Empleado</h5>
+        <form [formGroup]="formEmpleado">
+          <div class="form-group">
+            <label for="">Nombre y Apellido</label>
+            <input type="text" class="form-control" formControlName="username">
+          </div>
+          <div class="form-group">
+            <label for="">Ubicacion <i>(opcional)</i></label>
+            <input type="text" class="form-control" formControlName="ubicacion">
+          </div>  
+        </form>
+      </div>
+
+      <div class="form-group mt-2">
+        <input type="checkbox" [(ngModel)]="newEmpleado"> Nuevo Empleado
+      </div>
+
+      
+      <div class="shadow bg-white p-4 rounded">
+        <h5 class="p-2">Informacion de Pago</h5>      
+        <form [formGroup]="formPagos">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="">Monto</label>
+                <input type="text" class="form-control" formControlName="monto">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="">Observacio <i>(opciones)</i></label>
+                <input type="text" class="form-control" formControlName="observacion">
+              </div>  
+            </div>
+          </div>
+        </form>
+      </div>
+      
+
+      <div class="shadow bg-white p-4 rounded mt-2">
+        <h2 class="p-2">Cuentas</h2>            
+        <div class="form-group" *ngIf="!newCuenta">
+          <label for="">Cuentas</label>
+          <select class="form-control" [(ngModel)]="cuenta_id">
+            <option *ngFor="let cuenta of cuentas" [value]="cuenta.id">{{cuenta.titular}} - {{cuenta.telefono}} - {{cuenta.nro}}</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <input type="checkbox" [(ngModel)]="newCuenta"> Nueva cuenta
+        </div>
+        
+        <div *ngIf="newCuenta">
+          <h5>Nueva Cuenta</h5>
+          <form [formGroup]="formCuentas">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="">Tipos</label>
+                  <select class="form-control" formControlName="tipo">
+                    <option *ngFor="let tipo of tipos" [value]="tipo.id">{{tipo.tipo}}</option>
+                  </select>
+                </div>   
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="">Titular</label>
+                  <input type="text" class="form-control" formControlName="titular">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="">Cedula de Identidad</label>
+                  <input type="text" class="form-control" formControlName="cedula">
+                </div>   
+              </div>
+              <div class="col-md-6">
+                <div class="form-group" *ngIf="formCuentas.get('tipo').value == 1">
+                  <label for="">Nro de Cuenta</label>
+                  <input type="text" class="form-control" formControlName="nro">
+                </div>    
+                <div class="form-group" *ngIf="formCuentas.get('tipo').value == 2">
+                  <label for="">Telefono</label>
+                  <input type="text" class="form-control" formControlName="telefono">
+                </div>
+              </div>                  
+            </div>
+          </form>        
+        </div>
+
+        <div class="row">
+          <div class="col-md-12 text-right">
+            <div>
+              <button class="btn btn-success" (click)="concluir()">Guardar</button>
+            </div>
+          </div>
+        </div>  
+        
+      </div>
+    </div>
+    <div class="col-12 col-md-2">
+      <ul class="list-group">
+        <li class="list-group-item" *ngFor="let ultimos_pago of ultimos_pagos">
+          <p>{{ultimos_pago.username}}</p>
+          <p> Monto {{ultimos_pago.monto}} Bs</p>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
