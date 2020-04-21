@@ -19,6 +19,7 @@
               <span *ngIf="pagos_pendiente.nro"><b>Nro</b> {{pagos_pendiente.nro}}</span>   
               <span *ngIf="pagos_pendiente.telefono"><b>Telefono</b> {{pagos_pendiente.telefono}}</span>   
             </p>    
+            <button (click)="deletePago(pagos_pendiente.idPagos)" class="btn btn-danger btn-sm">Eliminar</button>
             <form [formGroup]="formCancela">
               <div class="form-inline">
                 <input type="text" class="form-control" placeholder="codigo de transferencia" formControlName="code"> <button class="btn btn-success" (click)="codePago(pagos_pendiente.idPagos)">Listo</button>

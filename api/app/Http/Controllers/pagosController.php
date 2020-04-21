@@ -71,4 +71,12 @@ class pagosController extends Controller
             ->where('pagos.is_pago',0)->orderby('pagos.id','desc')->limit(5)->get();
         return response()->json($p);
     }
+
+
+    public function deletePagos($id){
+        $p = Pago::find($id);
+        $p->delete();
+        $p->save();
+        return response()->json($p);
+    }
 }

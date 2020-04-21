@@ -23,6 +23,7 @@ Route::group(['prefix' => 'v1', 'middleware' => 'cors'], function () {
     Route::post('pagos','pagosController@store');
     Route::post('pagar','pagosController@codePago');    
     Route::get('ultimos-pagos','pagosController@ultimosPagos');
+    Route::get('delete-pagos/{id}', 'pagosController@deletePagos');
 
     Route::get('tipos','tiposController@index');    
     Route::get('cuentas-empleados/{idEmpleado}','cuentasController@cuentaEmpleado');

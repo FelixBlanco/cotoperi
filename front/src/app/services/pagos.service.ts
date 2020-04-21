@@ -36,5 +36,8 @@ export class PagosService {
     return this.router.get(`${environment.apiHost}/api/v1/ultimos-pagos`, httpOptions);    
   }
 
+  deletePagos(id){
+    return this.router.get(`${environment.apiHost}/api/v1/delete-pagos/${id}`, httpOptions);    
+  }
 
 }

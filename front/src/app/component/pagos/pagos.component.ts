@@ -137,4 +137,8 @@ export class PagosComponent implements OnInit {
       }
     })
   }
+
+  addTitular(event){    
+    this.formCuentas.controls['titular'].setValue(event.target.value)
+  }
 }

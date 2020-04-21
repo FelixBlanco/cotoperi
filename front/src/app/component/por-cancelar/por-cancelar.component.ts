@@ -39,4 +39,10 @@ export class PorCancelarComponent implements OnInit {
       this.formCancela.reset();
     })
   }
+
+  deletePago(id){
+    this._pago.deletePagos(id).subscribe((resp) => {
+      this.pagosPendientes()      
+    })
+  }
 }
