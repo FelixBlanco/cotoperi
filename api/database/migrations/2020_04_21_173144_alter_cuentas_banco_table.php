@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePagosTable extends Migration
+class AlterCuentasBancoTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class CreatePagosTable extends Migration
      */
     public function up()
     {
-        Schema::table('pagos', function (Blueprint $table) {
-            $table->string('monto');
+        Schema::table('cuentas', function (Blueprint $table) {
+            $table->string('tipo_banco')->nullable();
         });
     }
 
@@ -25,7 +25,7 @@ class CreatePagosTable extends Migration
      */
     public function down()
     {
-        Schema::table('pagos', function (Blueprint $table) {
+        Schema::table('cuentas', function (Blueprint $table) {
             //
         });
     }

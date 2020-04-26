@@ -14,17 +14,22 @@ use Illuminate\Http\Request;
 */
 
 Route::group(['prefix' => 'v1', 'middleware' => 'cors'], function () {    
+    
     Route::resource('empleados','empleadosController');    
     
     Route::get('cuentas','cuentasController@index');
     Route::post('cuentas','cuentasController@store'); 
-
+    Route::put('cuentas/{id}','cuentasController@upgrade');
+    Route::delete('delete-cuenta/{id}','cuentasController@delete');
+    
     Route::get('pagos-pendientes','pagosController@pagosPendientes');   
     Route::post('pagos','pagosController@store');
     Route::post('pagar','pagosController@codePago');    
     Route::get('ultimos-pagos','pagosController@ultimosPagos');
     Route::get('delete-pagos/{id}', 'pagosController@deletePagos');
+    Route::post('add-pago-empleado','pagosController@addPagosEmpleados');
 
     Route::get('tipos','tiposController@index');    
     Route::get('cuentas-empleados/{idEmpleado}','cuentasController@cuentaEmpleado');
+    
 });

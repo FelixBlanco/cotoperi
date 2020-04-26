@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { EmpleadosService } from 'src/app/services/empleados.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
+import * as $ from 'jquery';
+
 @Component({
   selector: 'app-empleados',
   templateUrl: './empleados.component.html',
@@ -11,6 +13,8 @@ export class EmpleadosComponent implements OnInit {
 
   empleados : any = []
   formEmpleados : FormGroup
+  isLoading : boolean = false
+  isLoadingGetEmpleados  : boolean = false
 
   constructor(
     private _empleados : EmpleadosService,
@@ -23,20 +27,23 @@ export class EmpleadosComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getEmpleado()
-
+    this.getEmpleado()    
   }
 
   getEmpleado(){
+    this.isLoadingGetEmpleados = true
     this._empleados.indexEmpleado().subscribe((resp:any) => {
       this.empleados = resp
+      this.isLoadingGetEmpleados = false
     })
   }
 
   newEmpleado(){
+    this.isLoading = true
     this._empleados.storeEmpleado(this.formEmpleados.value).subscribe((resp:any) => {
       this.getEmpleado();
-      this.formEmpleados.reset()
+      this.isLoading = false
+      this.formEmpleados.reset()      
     })
   }
 }

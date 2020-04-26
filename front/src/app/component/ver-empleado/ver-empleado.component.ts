@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { EmpleadosService } from 'src/app/services/empleados.service';
 import { CuentasService } from 'src/app/services/cuentas.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { PagosService } from 'src/app/services/pagos.service';
+
+declare var $ : any;
 
 @Component({
   selector: 'app-ver-empleado',
@@ -17,14 +19,18 @@ export class VerEmpleadoComponent implements OnInit {
   cuentas   : any = []
   tipos     : any = []
 
-  formCuentas   : FormGroup
+  formCuentas     : FormGroup
+  formCuentasEdit : FormGroup
+  formCancela     : FormGroup
+  formAddPago     : FormGroup
 
   constructor(
     private rutaActiva : ActivatedRoute,
     private _empleado : EmpleadosService,
     private _cuentas : CuentasService ,
     private fb : FormBuilder,
-    private _pago : PagosService
+    private _pago : PagosService,
+    private router : Router
   ) { 
     this.formCuentas = this.fb.group({
       tipo      : [''],
@@ -32,7 +38,29 @@ export class VerEmpleadoComponent implements OnInit {
       titular   : [''],
       telefono  : [''],
       cedula    : [''],
-    })        
+    }) 
+    
+    this.formCuentasEdit = this.fb.group({
+      id        : [''],
+      tipo      : [''],
+      nro       : [''],
+      titular   : [''],
+      telefono  : [''],
+      cedula    : [''],
+      tipo_banco : [''],
+      empleado_id : ['']
+    })   
+    
+    this.formCancela = this.fb.group({
+      code : ['']
+    })     
+
+    this.formAddPago = this.fb.group({
+      'monto'       : [''],
+      'observacion' : ['Pago semana'],
+      'cuenta_id'   : [''],
+      'empleado_id' : [''],    
+    })
   }
 
   ngOnInit(): void {
@@ -52,6 +80,7 @@ export class VerEmpleadoComponent implements OnInit {
       this.empleado = resp.empleado
       this.pagos = resp.pagos
       this.getCuentasEmpleados(id)
+      this.formAddPago.controls['empleado_id'].setValue(resp.empleado.id)      
     })
   }
 
@@ -75,6 +104,75 @@ export class VerEmpleadoComponent implements OnInit {
     this._cuentas.cuentasStore(data).subscribe((resp:any) => {
       this.getCuentasEmpleados(this.empleado.id)
       this.formCuentas.reset()      
+      $("#staticBackdrop").modal('hide')
     })
+  }
+
+  editCuenta(datos){
+    console.log(datos)
+   
+    if(datos.tipo_id == 1){ // datos trasferencia
+      
+      this.formCuentasEdit.controls['id'].setValue(datos.id)
+      this.formCuentasEdit.controls['cedula'].setValue(datos.cedula)
+      this.formCuentasEdit.controls['empleado_id'].setValue(datos.empleado_id)
+      this.formCuentasEdit.controls['nro'].setValue(datos.nro)
+      this.formCuentasEdit.controls['titular'].setValue(datos.titular)
+      this.formCuentasEdit.controls['tipo'].setValue(datos.tipo_id)
+    }
+
+    if(datos.tipo_id == 2){ // datos pago movil
+      this.formCuentasEdit.controls['id'].setValue(datos.id)
+      this.formCuentasEdit.controls['cedula'].setValue(datos.cedula)
+      this.formCuentasEdit.controls['empleado_id'].setValue(datos.empleado_id)
+      this.formCuentasEdit.controls['telefono'].setValue(datos.telefono)
+      this.formCuentasEdit.controls['titular'].setValue(datos.titular)
+      this.formCuentasEdit.controls['tipo_banco'].setValue(datos.tipo_banco)
+      this.formCuentasEdit.controls['tipo'].setValue(datos.tipo_id)
+
+    }
+
+    $("#editarCuentaModal").modal('show')
+  }
+
+  upgradeCuentas(){
+    this._cuentas.cuentasUpgrade(this.formCuentasEdit.value).subscribe((resp:any) => this.getCuentasEmpleados(resp.empleado_id) )
+    $("#editarCuentaModal").modal('hide')
+  }
+
+  codePago(idPago){
+    const formData = this.formCancela.value
+    const info = { code : formData.code, idPago : idPago }    
+    this._pago.pagar(info).subscribe((resp:any) => {
+      this.getEmpleado(resp.empleado_id)
+      this.formCancela.reset();
+    })
+  }
+
+  deletePago(id){
+    this._pago.deletePagos(id).subscribe((resp:any) => {      
+      this.getEmpleado(resp.empleado_id) 
+    })
+  }
+
+  deleteCuentas($idcuenta){
+    this._cuentas.deleteCuentas($idcuenta).subscribe((resp:any) => {
+      this.getCuentasEmpleados(resp.empleado_id)
+    })
+  }
+
+  agregarPago(){
+   this._pago.addPagoEmpleados(this.formAddPago.value).subscribe((resp:any)=> {
+     this.getEmpleado(resp.empleado_id)     
+     this.formAddPago.controls['monto'].setValue('0')
+     this.formAddPago.controls['observacion'].setValue('pago semana')
+     $("#addPagos").modal('hide')
+   }) 
+  }
+
+  deleteEmpleado(){
+   this._empleado.deletesEmpleado(this.empleado.id).subscribe((resp:any) => {
+     this.router.navigate(['/'])
+   }) 
   }
 }

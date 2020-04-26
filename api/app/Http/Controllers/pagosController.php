@@ -79,4 +79,14 @@ class pagosController extends Controller
         $p->save();
         return response()->json($p);
     }
+
+    /**
+     * Agregar pagos desde el perfil 
+     * del empleado
+     */
+    public function addPagosEmpleados(Request $request){        
+        $p = new Pago($request->all());
+        $p->save();
+        return response()->json($p);
+    }
 }

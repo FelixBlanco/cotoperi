@@ -22,6 +22,7 @@ class CreatePagosTable extends Migration
             $table->boolean('is_pago')->default(0);                          
             $table->string('code')->nullable();
             $table->mediumText('observacion')->nullable();
+            $table->string('monto');
             $table->timestamps();
             $table->softDeletes();
         });

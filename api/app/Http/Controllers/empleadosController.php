@@ -53,11 +53,16 @@ class empleadosController extends Controller
         
         $empleado = Empleado::find($id); //Ver toda la infomracion del mismo
 
-        $pagos = Pago::join('cuentas','cuentas.id','=','pagos.cuenta_id')
-                    ->join('tipos','tipos.id','=','cuentas.tipo_id')
-                    ->where('pagos.empleado_id',$id)
-                    ->orderby('pagos.id','desc')
-                    ->get();
+        $pagos = Pago::select(
+            'cuentas.id as idCuenta','cuentas.nro','cuentas.titular','cuentas.telefono','cuentas.cedula','cuentas.empleado_id','cuentas.tipo_id','cuentas.tipo_banco',
+            'tipos.id as idTipos','tipos.tipo',
+            'pagos.id as id','pagos.cuenta_id','pagos.empleado_id','pagos.is_pago','pagos.code','pagos.observacion','pagos.monto','pagos.created_at as datePago'
+        )
+            ->join('cuentas','cuentas.id','=','pagos.cuenta_id')
+            ->join('tipos','tipos.id','=','cuentas.tipo_id')
+            ->where('pagos.empleado_id',$id)
+            ->orderby('pagos.id','desc')
+            ->get();
 
         return response()->json([
             'empleado' => $empleado, 'pagos' => $pagos
@@ -95,6 +100,9 @@ class empleadosController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $e = Empleado::find($id);
+        $e->delete();
+        $e->save();
+        return response()->json($e);
     }
 }

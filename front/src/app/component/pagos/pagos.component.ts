@@ -60,6 +60,7 @@ export class PagosComponent implements OnInit {
       titular   : [''],
       telefono  : [''],
       cedula    : [''],
+      tipo_banco : ['']
     })    
   }
 

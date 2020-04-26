@@ -27,4 +27,8 @@ export class EmpleadosService {
   storeEmpleado(data){    
     return this.router.post(`${environment.apiHost}/api/v1/empleados`, data, httpOptions);
   }  
+
+  deletesEmpleado(id){
+    return this.router.delete(`${environment.apiHost}/api/v1/empleados/${id}`, httpOptions);
+  }
 }

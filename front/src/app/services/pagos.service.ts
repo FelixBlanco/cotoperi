@@ -40,4 +40,8 @@ export class PagosService {
     return this.router.get(`${environment.apiHost}/api/v1/delete-pagos/${id}`, httpOptions);    
   }
 
+  addPagoEmpleados(data){
+    return this.router.post(`${environment.apiHost}/api/v1/add-pago-empleado`,data, httpOptions);
+  }
+
 }

@@ -28,5 +28,12 @@ export class CuentasService {
     return this.router.get(`${environment.apiHost}/api/v1/cuentas-empleados/${idEmpleado}`, httpOptions);
   }
 
-  
+  cuentasUpgrade(data){    
+    return this.router.put(`${environment.apiHost}/api/v1/cuentas/${data.id}`, data, httpOptions);
+  }  
+
+  deleteCuentas(id){
+    return this.router.delete(`${environment.apiHost}/api/v1/delete-cuenta/${id}`, httpOptions);
+  }
+
 }

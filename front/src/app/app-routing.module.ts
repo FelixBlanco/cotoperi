@@ -8,6 +8,7 @@ import { VerEmpleadoComponent } from './component/ver-empleado/ver-empleado.comp
 
 const routes: Routes = [
   { path : '', component : EmpleadosComponent },
+  { path : 'empleados', component : EmpleadosComponent},
   { path : "ver/:idEmpleado", component : VerEmpleadoComponent },
   { path : 'por-cancelar', component : PorCancelarComponent },
   { path : 'pagos', component : PagosComponent }
