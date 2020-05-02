@@ -4,22 +4,29 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Pago;
-
 use App\Empleado;
 use App\Cuenta;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class pagosController extends Controller
 {
     public function pagosPendientes(){
-        $p = Pago::select(
-            'pagos.id as idPagos','pagos.cuenta_id','pagos.empleado_id','pagos.is_pago','pagos.code','pagos.observacion','pagos.monto',
+        $pagosPendientes = Pago::select(
+            'pagos.id as idPagos','pagos.cuenta_id','pagos.empleado_id','pagos.is_pago','pagos.code','pagos.observacion','pagos.monto','pagos.created_at',
             'cuentas.id as idCuentas','cuentas.nro','cuentas.titular','cuentas.telefono','cuentas.cedula','cuentas.empleado_id',
             'empleados.id as idEmpleados', 'empleados.username', 'empleados.ubicacion'
             )
             ->join('cuentas','cuentas.id','=','pagos.cuenta_id')
             ->join('empleados','empleados.id','=','pagos.empleado_id')
             ->where('pagos.is_pago',0)->get();
-        return response()->json($p);
+
+        $pagosPendientes->each(function($pagosPendientes){
+            $pagosPendientes->setMonto = number_format($pagosPendientes->monto);
+            $pagosPendientes->setDate = Carbon::parse($pagosPendientes->created_at)->format('d m Y');
+        });
+
+        return response()->json($pagosPendientes);
     }
 
     public function store(Request $request){
@@ -88,5 +95,46 @@ class pagosController extends Controller
         $p = new Pago($request->all());
         $p->save();
         return response()->json($p);
+    }
+
+    public function listaNomina(){
+
+        $dateInit = '2020-04-01'; 
+        $today = date("Y-m-d");
+
+        $pagos = Pago::select( DB::raw("date(created_at) as listaDate")
+                )->whereBetween('created_at',[$dateInit, $today])                
+                ->groupBy('listaDate')
+                ->orderby('listaDate','desc')
+                ->get();
+
+        return response()->json($pagos);
+
+    }
+
+    public function seachFechaNomina($date){       
+
+        $p = Pago::select(
+            'empleados.id as idEmpleado','empleados.username', 'empleados.ubicacion',
+            'cuentas.id as idCuentas','cuentas.nro','cuentas.titular','cuentas.telefono','cuentas.cedula','cuentas.empleado_id','cuentas.tipo_id','cuentas.tipo_banco',
+            'pagos.id as idPagos','pagos.cuenta_id','pagos.empleado_id','pagos.is_pago','pagos.code','pagos.observacion','pagos.monto'
+        )
+            ->join('empleados','empleados.id','=','pagos.empleado_id')
+            ->join('cuentas','cuentas.id','=','pagos.cuenta_id')
+            ->where('pagos.created_at','like','%'.$date.'%')->get();
+        
+        $p->each(function($p,$totalNeto){                        
+            $p->setMonto = number_format($p->monto);                        
+        });
+                    
+        $totalNeto = 0;        
+        foreach ($p as $pago) {
+            $totalNeto = $totalNeto + $pago->monto;
+        }
+
+        return response()->json([
+            'p'         => $p,
+            'totalNeto' => number_format($totalNeto)
+        ]);
     }
 }

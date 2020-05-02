@@ -1,30 +1,47 @@
 <div class="container">
   <div class="row">
     <div class="col-md-12">
-      <h2 class="p-2">Pendientes por pagar</h2>
+      <h2 class="p-2">Pendientes por pagar ({{pagos_pendientes.length}})</h2>
     </div>
   </div>
   <div class="row">
     <div class="col-12 col-md-4" *ngFor="let pagos_pendiente of pagos_pendientes">
       <div class="shadow bg-white p-2 rounded mb-2">
         <div class="row">
-          <div class="col-md-6"><h5 class="p-2">{{pagos_pendiente.username}}</h5></div>
-          <div class="col-md-6 text-right"><h5 class="p-2">{{pagos_pendiente.monto}}Bs</h5></div>
+          <div class="col-12">
+            <div class="text-right">
+              <button type="button" class="close" aria-label="Close" (click)="deletePago(pagos_pendiente.idPagos)">
+                <span aria-hidden="true">&times;</span>
+              </button>        
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 col-md-12">
+            <h2 class="p-2">
+              {{pagos_pendiente.username}} <br>
+              {{pagos_pendiente.setMonto}}Bs
+            </h2>
+          </div>
         </div>
         <div class="row">
           <div class="col-md-12">
-            <p>
+            <p>            
               <b>Titular</b> {{pagos_pendiente.titular}} <br>
               <span *ngIf="pagos_pendiente.cedula"><b>C. I.</b> {{pagos_pendiente.cedula}}</span> <br>
               <span *ngIf="pagos_pendiente.nro"><b>Nro</b> {{pagos_pendiente.nro}}</span>   
-              <span *ngIf="pagos_pendiente.telefono"><b>Telefono</b> {{pagos_pendiente.telefono}}</span>   
-            </p>    
-            <button (click)="deletePago(pagos_pendiente.idPagos)" class="btn btn-danger btn-sm">Eliminar</button>
-            <form [formGroup]="formCancela">
-              <div class="form-inline">
-                <input type="text" class="form-control" placeholder="codigo de transferencia" formControlName="code"> <button class="btn btn-success" (click)="codePago(pagos_pendiente.idPagos)">Listo</button>
-              </div>                  
-            </form>
+              <span *ngIf="pagos_pendiente.telefono"><b>Telefono</b> {{pagos_pendiente.telefono}}</span>   <br>
+              <span>Fecha {{pagos_pendiente.setDate}}</span>
+            </p>      
+            <div class="text-center p-3">
+              <form [formGroup]="formCancela">
+                <div class="form-inline">
+                  <input type="text" class="form-control" placeholder="codigo de transferencia" formControlName="code"> <button class="btn btn-success" (click)="codePago(pagos_pendiente.idPagos)">Listo</button>
+                </div>                  
+                <div *ngIf="isLoading" class="spinner-border" role="status"><span class="sr-only">Loading...</span></div>
+              </form>
+            </div>          
+
           </div>
         </div>
       </div>

@@ -1,0 +1,15 @@
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-5">
+      <h2 class="p-2">Listas nominas</h2>
+
+      <div class="spinner-border text-center" *ngIf="isLoading" role="status"><span class="sr-only">Loading...</span></div>
+
+      <ul class="list-group" *ngIf="!isLoading">
+        <li class="list-group-item" *ngFor="let lista_fecha of lista_fechas">
+          <a [routerLink]="['/nominas/',lista_fecha.listaDate]"><h3>{{lista_fecha.listaDate}}</h3></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

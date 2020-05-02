@@ -11,6 +11,7 @@ export class PorCancelarComponent implements OnInit {
 
   pagos_pendientes : any = []
   formCancela : FormGroup
+  isLoading : boolean = false
 
   constructor(
     private _pago : PagosService,
@@ -32,11 +33,13 @@ export class PorCancelarComponent implements OnInit {
   }
 
   codePago(idPago){
+    this.isLoading = true
     const formData = this.formCancela.value
     const info = { code : formData.code, idPago : idPago }    
     this._pago.pagar(info).subscribe((resp:any) => {
       this.pagosPendientes()
       this.formCancela.reset();
+      this.isLoading = false
     })
   }
 

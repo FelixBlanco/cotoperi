@@ -6,12 +6,23 @@
         <span class="lnr lnr-plus-circle"></span> 
       </button>
       </h3>
+      
       <div class="spinner-border" *ngIf="isLoadingGetEmpleados" role="status"><span class="sr-only">Loading...</span></div>
-      <ul class="list-group" *ngIf="!isLoadingGetEmpleados">
-        <li class="list-group-item" *ngFor="let empleado of empleados">
-          <a [routerLink]="['/ver/',empleado.id]" style="color: black; list-style: none;"><h3>{{empleado.username}}</h3></a>
-        </li>
-      </ul>
+      
+      <div *ngIf="!isLoadingGetEmpleados">        
+        <div class="form-group">
+          <input type="text" [(ngModel)]="filterSeach" placeholder="Buscar empleados" class="form-control">
+        </div>
+        
+        <div class="row shadow mt-2 p-2 rounded" *ngFor="let empleado of empleados | filterSeach : filterSeach">
+          <div class="col-md-9">
+            <a [routerLink]="['/empleados/',empleado.id]" style="color: black; list-style: none;">
+              <h3>{{empleado.username}}</h3>
+              <span *ngIf="empleado.pagosPendientes == 'true'" class="badge badge-danger">Pendiente por pagar</span> <span class="ml-1">{{empleado.setDate}}</span> 
+            </a>  
+          </div>
+        </div>
+      </div>
     </div>    
   </div>
 </div>

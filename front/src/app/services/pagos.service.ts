@@ -43,5 +43,13 @@ export class PagosService {
   addPagoEmpleados(data){
     return this.router.post(`${environment.apiHost}/api/v1/add-pago-empleado`,data, httpOptions);
   }
+  
+  listaFechaPagos(){
+    return this.router.get(`${environment.apiHost}/api/v1/lista-pagos`, httpOptions);    
+  }
+
+  seachNomina(date){
+    return this.router.get(`${environment.apiHost}/api/v1/seach-nomina/${date}`, httpOptions);        
+  }
 
 }

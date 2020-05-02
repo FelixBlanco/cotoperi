@@ -15,7 +15,9 @@ export class EmpleadosComponent implements OnInit {
   formEmpleados : FormGroup
   isLoading : boolean = false
   isLoadingGetEmpleados  : boolean = false
-
+  
+  filterSeach : string = null // para filtrar
+   
   constructor(
     private _empleados : EmpleadosService,
     private fb : FormBuilder

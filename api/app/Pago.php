@@ -12,4 +12,12 @@ class Pago extends Model
     protected $fillable = [
         'cuenta_id','empleado_id','is_pago','code','observacion','monto'
     ];
+
+    public function empleado(){
+        return $this->belongsTo(Empleado::class);
+    }
+
+    public function cuenta(){
+        return $this->belongsTo(Cuenta::class);
+    }    
 }

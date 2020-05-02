@@ -10,6 +10,8 @@ import { PagosComponent } from './component/pagos/pagos.component';
 import { EmpleadosComponent } from './component/empleados/empleados.component';
 import { PorCancelarComponent } from './component/por-cancelar/por-cancelar.component';
 import { VerEmpleadoComponent } from './component/ver-empleado/ver-empleado.component';
+import { ListaNominaComponent, ListaNominaListComponent } from './component/lista-nomina/lista-nomina.component';
+import { FilterSeachPipe } from './filter-seach.pipe';
 
 @NgModule({
   declarations: [
@@ -17,7 +19,10 @@ import { VerEmpleadoComponent } from './component/ver-empleado/ver-empleado.comp
     PagosComponent,
     EmpleadosComponent,
     PorCancelarComponent,
-    VerEmpleadoComponent
+    VerEmpleadoComponent,
+    ListaNominaComponent,
+    ListaNominaListComponent,
+    FilterSeachPipe
   ],
   imports: [
     BrowserModule,

@@ -32,4 +32,6 @@ Route::group(['prefix' => 'v1', 'middleware' => 'cors'], function () {
     Route::get('tipos','tiposController@index');    
     Route::get('cuentas-empleados/{idEmpleado}','cuentasController@cuentaEmpleado');
     
+    Route::get('lista-pagos','pagosController@listaNomina');
+    Route::get('seach-nomina/{date}','pagosController@seachFechaNomina');
 });

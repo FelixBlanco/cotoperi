@@ -1,0 +1,43 @@
+<!-- lista con toda la informacion, sus codigo y pendientes y todo  -->
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-12">
+      
+      <div class="spinner-border text-center" *ngIf="isLoading" role="status"><span class="sr-only">Loading...</span></div>
+
+      <div *ngIf="!isLoading">
+        <div class="row">
+          <div class="col-md-4"><h4 class="p-3 rounded text-center shadow">{{listaPagos.length}} <br> Pagos</h4></div>
+          <div class="col-md-4"><h4 class="p-3 rounded text-center shadow">{{fechaSeach}} <br> Fecha</h4></div>
+          <div class="col-md-4"><h4 class="p-3 rounded text-center shadow">{{totalNeto}}Bs <br> Total neto</h4></div>
+        </div>
+        <div class="row">
+          <div class="col-12 col-md-4 mt-2" *ngFor="let listaPago of listaPagos">
+            <div class="shadow bg-white p-2" style="height: 350px;">
+              <a [routerLink]="['/empleados/',listaPago.idEmpleado]">
+                <h2> {{listaPago.username}} <br> <small>{{listaPago.setMonto}}Bs</small> </h2>   
+              
+                <p class="mt-1">
+                  <span *ngIf="listaPago.titular"> Titular : {{listaPago.titular}}</span> <br>
+                  <span *ngIf="listaPago.cedula">C.I : {{listaPago.cedula}}</span>   <br>        
+                  <span *ngIf="listaPago.nro">Nro Cuenta : {{listaPago.nro}}</span> <br>
+                  <span *ngIf="listaPago.telefono">telefono : {{listaPago.telefono}}</span>
+                </p>
+                                          
+                <!-- Codigo  -->
+                <div class="badge badge-success mr-2" *ngIf="listaPago.is_pago == '1'" > {{listaPago.code}} </div>    
+    
+                <!-- Pendiente o pago -->
+    
+                <span class="badge badge-success" *ngIf="listaPago.is_pago == '1'">Pago</span>            
+                <span class="badge badge-warning" *ngIf="listaPago.is_pago == '0'">Pendiente</span>            
+                          
+                <p class="p-2" *ngIf="listaPago.observacion"><b>Observacion: </b> {{listaPago.observacion}}</p>                            
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -36,8 +36,16 @@
                   <div class="col-md-6 mt-1">
                     <h2 class="p-2">{{pago.titular}}</h2>
                     <div class="mt-1">
+
+                      <div>
+                        <div *ngIf="pago.is_pago == '0'" class="badge badge-warning">Pendiente</div>
+                        <div *ngIf="pago.is_pago == '1'" class="badge badge-success">Listo</div>                        
+                        <div class="badge badge-secondary ml-1">Es un {{pago.tipo}}</div> 
+                        <div *ngIf="pago.code" class="badge badge-success">Codigo : {{pago.code}}</div>                    
+                      </div>
+
                       <!-- Eliminar  -->
-                      <button (click)="deletePago(pago.id)" *ngIf="pago.is_pago == '0'" class="btn btn-danger btn-sm">Elimianr Pago</button>
+                      <button (click)="deletePago(pago.id)" *ngIf="pago.is_pago == '0'" class="btn btn-danger btn-sm mt-1">Elimianr Pago</button>
 
                       <!-- agregar codigo \ si ya esta en 1, no se puede eliminar -->
                       <form [formGroup]="formCancela" *ngIf="pago.is_pago == '0'" class="mt-2">
@@ -48,23 +56,15 @@
                     </div>
                   </div>
                   <div class="col-md-6 mt-1">
-                    <h2 class="p-2 text-right">{{pago.monto}}Bs</h2>
+                    <h2 class="p-2 text-right">{{pago.setMonto}}Bs</h2>
                     <!-- Informacion de pago -->
-
-                    <div class="text-right">
-                      <div *ngIf="pago.is_pago == '0'" class="badge badge-warning">Pendiente</div>
-                      <div *ngIf="pago.is_pago == '1'" class="badge badge-success">Listo</div>                        
-                      <div class="badge badge-secondary ml-1">Es un {{pago.tipo}}</div> 
-                      <div *ngIf="pago.code" class="badge badge-success">Codigo : {{pago.code}}</div>                    
-                    </div>
-
                     <div class="text-right">
                       <div><b>C. I.</b> {{pago.cedula}}</div> 
                       <div *ngIf="pago.nro"><b>Nro C.</b> {{pago.nro}} </div>                
                       <div *ngIf="pago.telefono"><b>Telefono</b> {{pago.telefono}}  </div> 
                     </div>      
 
-                    <div class="mt-1 text-right">Fecha {{pago.datePago}}</div>
+                    <div class="mt-1 text-right">Fecha {{pago.setDate}}</div>
                   </div>
                 </div>
               </div>
@@ -133,17 +133,17 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label for="">Cedula de Identidad</label>
-                <input type="text" class="form-control" formControlName="cedula">
+                <input type="number" class="form-control" formControlName="cedula">
               </div>   
             </div>
             <div class="col-md-6">
               <div class="form-group" *ngIf="formCuentas.get('tipo').value == 1">
                 <label for="">Nro de Cuenta</label>
-                <input type="text" class="form-control" formControlName="nro">
+                <input type="number" class="form-control" formControlName="nro">
               </div>    
               <div class="form-group" *ngIf="formCuentas.get('tipo').value == 2">
                 <label for="">Telefono</label>
-                <input type="text" class="form-control" formControlName="telefono">
+                <input type="number" class="form-control" formControlName="telefono">
               </div>
             </div>                  
           </div>
@@ -190,17 +190,17 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label for="">Cedula de Identidad</label>
-                <input type="text" class="form-control" formControlName="cedula">
+                <input type="number" class="form-control" formControlName="cedula">
               </div>   
             </div>
             <div class="col-md-6">
               <div class="form-group" *ngIf="formCuentasEdit.get('tipo').value == 1">
                 <label for="">Nro de Cuenta</label>
-                <input type="text" class="form-control" formControlName="nro">
+                <input type="number" class="form-control" formControlName="nro">
               </div>    
               <div class="form-group" *ngIf="formCuentasEdit.get('tipo').value == 2">
                 <label for="">Telefono</label>
-                <input type="text" class="form-control" formControlName="telefono">
+                <input type="number" class="form-control" formControlName="telefono">
               </div>
             </div>                  
           </div>
@@ -234,8 +234,8 @@
                 <select class="form-control" formControlName="cuenta_id">
                   <option *ngFor="let cuenta of cuentas" [value]="cuenta.id">
                     {{cuenta.titular}}, 
-                    {{cuenta.nro}}, 
-                    {{cuenta.telefono}},                   
+                    <span *ngIf="cuenta.nro">{{cuenta.nro}}</span> 
+                    <span *ngIf="cuenta.telefono">{{cuenta.telefono}}</span>                     
                   </option>
                 </select>
               </div>   
@@ -245,7 +245,7 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label for="">Monto</label>
-                <input type="text" class="form-control" formControlName="monto">
+                <input type="number" class="form-control" formControlName="monto">
               </div>   
             </div>
             <div class="col-md-6">

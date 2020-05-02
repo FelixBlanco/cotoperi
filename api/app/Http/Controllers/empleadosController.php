@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Empleado;
 use App\Pago;
+use Carbon\Carbon;
 
 class empleadosController extends Controller
 {
@@ -15,7 +16,18 @@ class empleadosController extends Controller
      */
     public function index()
     {
-        $e = Empleado::get();
+        $e = Empleado::orderby('username','asc')->get();
+        
+        $e->each(function($e){
+            $e->setDate = Carbon::parse($e->created_at)->format('d m Y');
+            $pagosPendientes = Pago::where([
+                                    ['empleado_id',$e->id],
+                                    ['is_pago','0']                
+                                ])->count();
+            $e->nro = $pagosPendientes;
+            $e->pagosPendientes = ($pagosPendientes == 1) ? 'true' : 'false' ;
+        });
+
         return response()->json($e);
     }
 
@@ -63,6 +75,11 @@ class empleadosController extends Controller
             ->where('pagos.empleado_id',$id)
             ->orderby('pagos.id','desc')
             ->get();
+        
+        $pagos->each(function($pagos){
+            $pagos->setMonto = number_format($pagos->monto);
+            $pagos->setDate = Carbon::parse($pagos->datePago)->format('d m Y ');
+        });
 
         return response()->json([
             'empleado' => $empleado, 'pagos' => $pagos
