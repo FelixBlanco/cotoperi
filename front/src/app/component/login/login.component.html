@@ -1,0 +1,20 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <h2 class="p-4 text-center">Cotoperices</h2>
+      <form [formGroup]="formLogin">
+        <div class="form-group">
+          <input type="email" class="form-control" formControlName="email" placeholder="ingresa el email">
+        </div>
+        <div class="form-group">
+          <input type="password" class="form-control" formControlName="password" placeholder="ingresa el password">
+        </div>        
+        <div class="form-group">
+          <button class="btn btn-block btn-success" (click)="entrar()">Ingresar 
+            <div class="spinner-border" *ngIf="isLoading" role="status"><span class="sr-only">Loading...</span></div>
+          </button>
+        </div>
+      </form>
+    </div>  
+  </div>
+</div>

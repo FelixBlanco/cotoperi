@@ -77,7 +77,8 @@ class empleadosController extends Controller
             ->get();
         
         $pagos->each(function($pagos){
-            $pagos->setMonto = number_format($pagos->monto);
+            $monto_sin_cero = str_replace ( ".", "", $pagos->monto);
+            $pagos->setMonto = number_format($monto_sin_cero);
             $pagos->setDate = Carbon::parse($pagos->datePago)->format('d m Y ');
         });
 

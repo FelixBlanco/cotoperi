@@ -15,6 +15,8 @@ use Illuminate\Http\Request;
 
 Route::group(['prefix' => 'v1', 'middleware' => 'cors'], function () {    
     
+    Route::post('login','authController@login');
+
     Route::resource('empleados','empleadosController');    
     
     Route::get('cuentas','cuentasController@index');
@@ -34,4 +36,8 @@ Route::group(['prefix' => 'v1', 'middleware' => 'cors'], function () {
     
     Route::get('lista-pagos','pagosController@listaNomina');
     Route::get('seach-nomina/{date}','pagosController@seachFechaNomina');
+
+    Route::group(['middleware' => 'auth:api' ], function() {
+
+    });
 });

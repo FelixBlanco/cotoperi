@@ -12,6 +12,10 @@ import { PorCancelarComponent } from './component/por-cancelar/por-cancelar.comp
 import { VerEmpleadoComponent } from './component/ver-empleado/ver-empleado.component';
 import { ListaNominaComponent, ListaNominaListComponent } from './component/lista-nomina/lista-nomina.component';
 import { FilterSeachPipe } from './filter-seach.pipe';
+import { LoginComponent } from './component/login/login.component';
+import { AboutComponent } from './component/about/about.component';
+import { FooterComponent } from './component/footer/footer.component';
+import { InputMonedaPipe } from './pipes/input-moneda.pipe';
 
 @NgModule({
   declarations: [
@@ -22,7 +26,11 @@ import { FilterSeachPipe } from './filter-seach.pipe';
     VerEmpleadoComponent,
     ListaNominaComponent,
     ListaNominaListComponent,
-    FilterSeachPipe
+    FilterSeachPipe,
+    LoginComponent,
+    AboutComponent,
+    FooterComponent,
+    InputMonedaPipe
   ],
   imports: [
     BrowserModule,

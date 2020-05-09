@@ -22,7 +22,8 @@ class pagosController extends Controller
             ->where('pagos.is_pago',0)->get();
 
         $pagosPendientes->each(function($pagosPendientes){
-            $pagosPendientes->setMonto = number_format($pagosPendientes->monto);
+            $monto_sin_cero = str_replace ( ".", "", $pagosPendientes->monto);
+            $pagosPendientes->setMonto = number_format($monto_sin_cero);
             $pagosPendientes->setDate = Carbon::parse($pagosPendientes->created_at)->format('d m Y');
         });
 
@@ -97,19 +98,19 @@ class pagosController extends Controller
         return response()->json($p);
     }
 
+
+    /**
+     * Lista de nominas generales
+     */
+
     public function listaNomina(){
 
-        $dateInit = '2020-04-01'; 
-        $today = date("Y-m-d");
-
-        $pagos = Pago::select( DB::raw("date(created_at) as listaDate")
-                )->whereBetween('created_at',[$dateInit, $today])                
+        $pagos = Pago::select( DB::raw("date(created_at) as listaDate") )
                 ->groupBy('listaDate')
                 ->orderby('listaDate','desc')
                 ->get();
 
         return response()->json($pagos);
-
     }
 
     public function seachFechaNomina($date){       
@@ -123,13 +124,15 @@ class pagosController extends Controller
             ->join('cuentas','cuentas.id','=','pagos.cuenta_id')
             ->where('pagos.created_at','like','%'.$date.'%')->get();
         
-        $p->each(function($p,$totalNeto){                        
-            $p->setMonto = number_format($p->monto);                        
+        $p->each(function($p,$totalNeto){   
+            $monto_sin_cero_uno = str_replace ( ".", "", $p->monto);                     
+            $p->setMonto = number_format($monto_sin_cero_uno);                        
         });
                     
         $totalNeto = 0;        
         foreach ($p as $pago) {
-            $totalNeto = $totalNeto + $pago->monto;
+            $monto_sin_cero = str_replace ( ".", "", $pago->monto);  
+            $totalNeto = $totalNeto + $monto_sin_cero;
         }
 
         return response()->json([
