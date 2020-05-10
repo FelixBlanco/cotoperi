@@ -9,6 +9,5 @@ export class AppComponent {
   
   isSession : boolean = false
 
-  
 
 }
