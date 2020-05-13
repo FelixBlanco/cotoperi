@@ -23,13 +23,16 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
   }
 
   entrar(){
     this._login._entrar(this.formLogin.value).subscribe((resp:any) => {
-      console.log(resp)
+      console.log(resp)      
+      localStorage.setItem('_token',resp.access_token);
+      location.reload()
     })
   }
+
+
 
 }

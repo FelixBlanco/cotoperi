@@ -1,32 +1,21 @@
+<app-login *ngIf="!isSession"></app-login> 
 
-<!-- <div>
-
-</div>
-
-<div>
-
-</div>
-
--->
-<app-login></app-login> 
-
-<div>
-  
+<div *ngIf="isSession">  
   <div class="container my-5">
     <div class="row justify-content-center">
       <div class="col-md-8">
-        <h1 class="p-2 text-center">Cotoperices</h1>
+        <h1 class="p-2 text-center">Cotoperices</h1>        
         <nav class="nav nav-pills nav-fill">
           <a class="nav-item nav-link ml-1 mt-1" [routerLink]="['empleados']" [routerLinkActive]="['active']" >Empleados</a>
           <a class="nav-item nav-link ml-1 mt-1" [routerLink]="['nominas']" [routerLinkActive]="['active']" >Lista Nomina</a>
-          <a class="nav-item nav-link ml-1 mt-1" [routerLink]="['por-cancelar']" [routerLinkActive]="['active']">Pendientes</a>
-          <!-- <a class="nav-item nav-link ml-1 mt-1" [routerLink]="['pagos']" [routerLinkActive]="['active']">Hacer pago</a> -->
+          <a class="nav-item nav-link ml-1 mt-1" [routerLink]="['por-cancelar']" [routerLinkActive]="['active']">Pendientes</a>          
+          <!-- <a class="nav-item nav-link ml-1 mt-1" [routerLink]="['pagos']" [routerLinkActive]="['active']">Hacer pago</a> -->          
         </nav>      
+        <div class="text-center mt-2" (click)="logout()">Cerrar Session</div>
       </div>
     </div>
   </div>
   <router-outlet></router-outlet>
-
 </div>
 
 <app-footer></app-footer>

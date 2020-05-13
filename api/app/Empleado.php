@@ -9,7 +9,7 @@ class Empleado extends Model
 {
     use SoftDeletes;
     
-    protected $fillable = [ 'username', 'ubicacion'];
+    protected $fillable = [ 'username', 'ubicacion','user_id'];
 
 
     public function pagos(){

@@ -24,6 +24,8 @@ export class VerEmpleadoComponent implements OnInit {
   formCancela     : FormGroup
   formAddPago     : FormGroup
 
+  respIs : boolean = false // medimos si el usuario es nuetro o no 
+
   constructor(
     private rutaActiva : ActivatedRoute,
     private _empleado : EmpleadosService,
@@ -77,10 +79,15 @@ export class VerEmpleadoComponent implements OnInit {
 
   getEmpleado(id){
     this._empleado.showEmpleado(id).subscribe((resp:any) => {
-      this.empleado = resp.empleado
-      this.pagos = resp.pagos
-      this.getCuentasEmpleados(id)
-      this.formAddPago.controls['empleado_id'].setValue(resp.empleado.id)      
+      if(resp.response){
+        this.empleado = resp.empleado
+        this.pagos = resp.pagos
+        this.getCuentasEmpleados(id)
+        this.formAddPago.controls['empleado_id'].setValue(resp.empleado.id)      
+        this.respIs = true;
+      }else{
+        this.respIs = false;
+      }
     })
   }
 

@@ -2,10 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { environment } from 'src/environments/environment';
 
+const _token = localStorage.getItem('_token')
+
 const httpOptions = {
   headers: new HttpHeaders({
     'Accept':  'application/json',
-    'Access-Control-Allow-Origin' : '*'
+    'Access-Control-Allow-Origin' : '*',
+    'Authorization':  'Bearer '+_token   
   })
 };
 

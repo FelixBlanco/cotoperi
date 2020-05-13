@@ -49,5 +49,30 @@ class authController extends Controller
                 'message' => 'Ha ocurrido un error al tratar de guardar los datos.',
             ], 500);
         }          
+    } 
+    
+    public function user(Request $request){        
+        $isSession = false;
+        ($request->user()) ? $isSession = true : $isSession = false;     
+
+        $user = null;
+        if($isSession){
+            $user = $request->user();
+        }
+
+        return response()->json([
+            'isSession' => $isSession,
+            'user' => $user
+        ]);
+    }
+
+    public function logout(Request $request)
+    {
+        if($request->user() != null){
+            $resp = $request->user()->token()->revoke();
+            return response()->json(['message' => 'Cerrando Session'],200);
+        }else{            
+            return response()->json(['message' => 'Cerrando Session'],200);
+        }        
     }    
 }

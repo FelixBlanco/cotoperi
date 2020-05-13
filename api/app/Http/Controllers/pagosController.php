@@ -11,15 +11,17 @@ use Illuminate\Support\Facades\DB;
 
 class pagosController extends Controller
 {
-    public function pagosPendientes(){
+    public function pagosPendientes(Request $request){
         $pagosPendientes = Pago::select(
             'pagos.id as idPagos','pagos.cuenta_id','pagos.empleado_id','pagos.is_pago','pagos.code','pagos.observacion','pagos.monto','pagos.created_at',
             'cuentas.id as idCuentas','cuentas.nro','cuentas.titular','cuentas.telefono','cuentas.cedula','cuentas.empleado_id',
-            'empleados.id as idEmpleados', 'empleados.username', 'empleados.ubicacion'
+            'empleados.id as idEmpleados', 'empleados.username', 'empleados.ubicacion', 'empleados.user_id'
             )
             ->join('cuentas','cuentas.id','=','pagos.cuenta_id')
             ->join('empleados','empleados.id','=','pagos.empleado_id')
-            ->where('pagos.is_pago',0)->get();
+            ->where([
+                ['pagos.is_pago',0],['empleados.user_id',$request->user()->id]
+            ])->get();
 
         $pagosPendientes->each(function($pagosPendientes){
             $monto_sin_cero = str_replace ( ".", "", $pagosPendientes->monto);
@@ -103,9 +105,11 @@ class pagosController extends Controller
      * Lista de nominas generales
      */
 
-    public function listaNomina(){
+    public function listaNomina(Request $request){
 
-        $pagos = Pago::select( DB::raw("date(created_at) as listaDate") )
+        $empleados = Empleado::where('empleados.user_id',$request->user()->id)->get();
+
+        $pagos = Pago::select( DB::raw("date(created_at) as listaDate") )                                
                 ->groupBy('listaDate')
                 ->orderby('listaDate','desc')
                 ->get();
@@ -113,16 +117,19 @@ class pagosController extends Controller
         return response()->json($pagos);
     }
 
-    public function seachFechaNomina($date){       
+    public function seachFechaNomina(Request $request, $date){       
 
         $p = Pago::select(
-            'empleados.id as idEmpleado','empleados.username', 'empleados.ubicacion',
+            'empleados.id as idEmpleado','empleados.username', 'empleados.ubicacion','empleados.user_id',
             'cuentas.id as idCuentas','cuentas.nro','cuentas.titular','cuentas.telefono','cuentas.cedula','cuentas.empleado_id','cuentas.tipo_id','cuentas.tipo_banco',
             'pagos.id as idPagos','pagos.cuenta_id','pagos.empleado_id','pagos.is_pago','pagos.code','pagos.observacion','pagos.monto'
         )
             ->join('empleados','empleados.id','=','pagos.empleado_id')
             ->join('cuentas','cuentas.id','=','pagos.cuenta_id')
-            ->where('pagos.created_at','like','%'.$date.'%')->get();
+            ->where([
+                ['pagos.created_at','like','%'.$date.'%'],
+                ['empleados.user_id',$request->user()->id]
+            ])->get();
         
         $p->each(function($p,$totalNeto){   
             $monto_sin_cero_uno = str_replace ( ".", "", $p->monto);                     
