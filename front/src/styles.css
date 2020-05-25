@@ -1,6 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
 @import url('https://fonts.googleapis.com/css2?family=Baloo+Paaji+2:wght@500&display=swap');
 
-body{ font-family: 'Baloo Paaji 2', cursive; }
+body{ 
+  background-color: #EDEDF1;
+  font-family: 'Baloo Paaji 2', cursive; 
+}
 
-nav .nav-link{ color: black; border: 1px solid black;}
+.c-aqua{ color: #35c5cf; }
+.c-a-ligth{ color: #d8eff5; }
+.c-b{ color : #81c9f3; }
+.c-w{ color : #EDEDF1; }
+
+.bg-c-b{ background-color : #81c9f3; }
+.bg-a-ligth{ background: #d8eff5; }
+

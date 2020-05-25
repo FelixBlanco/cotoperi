@@ -26,10 +26,13 @@ export class LoginComponent implements OnInit {
   }
 
   entrar(){
+    this.isLoading = true
     this._login._entrar(this.formLogin.value).subscribe((resp:any) => {
       console.log(resp)      
       localStorage.setItem('_token',resp.access_token);
       location.reload()
+      this.isLoading = false
+      
     })
   }
 

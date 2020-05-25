@@ -27,14 +27,14 @@ export class LoginService {
   constructor(private router: HttpClient) { }
 
   _entrar(data){    
-    return this.router.post(`${environment.apiHost}/api/v1/login`,data, httpOptions);
+    return this.router.post(`${environment.apiHost}api/v1/login`,data, httpOptions);
   }
 
   _user(){
-    return this.router.get(`${environment.apiHost}/api/v1/user`, httpOptionsAuth);
+    return this.router.get(`${environment.apiHost}api/v1/user`, httpOptionsAuth);
   }
 
   _logout(){
-    return this.router.get(`${environment.apiHost}/api/v1/logout`,httpOptionsAuth);
+    return this.router.get(`${environment.apiHost}api/v1/logout`,httpOptionsAuth);
   }
 }

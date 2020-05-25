@@ -1,7 +1,7 @@
 <div class="container">
   <div class="row justify-content-center">
     <div class="col-12 col-md-8">
-      <h3 class="p-2">Empleados ({{empleados.length}}) 
+      <h3 class="p-2"><ion-icon name="people-outline"></ion-icon> Empleados ({{empleados.length}}) 
       <button type="button" class="btn btn-success" data-toggle="modal" data-target="#staticBackdrop">
         <span class="lnr lnr-plus-circle"></span> 
       </button>
@@ -14,12 +14,15 @@
           <input type="text" [(ngModel)]="filterSeach" placeholder="Buscar empleados" class="form-control">
         </div>
         
-        <div class="row shadow mt-2 p-2 rounded" *ngFor="let empleado of empleados | filterSeach : filterSeach">
-          <div class="col-md-9">
-            <a [routerLink]="['/empleados/',empleado.id]" style="color: black; list-style: none;">
-              <h3>{{empleado.username}}</h3>
-              <span *ngIf="empleado.pagosPendientes == 'true'" class="badge badge-danger">Pendiente por pagar</span> <span class="ml-1">{{empleado.setDate}}</span> 
-            </a>  
+        <div class="row">
+          <div class="col-md-6" *ngFor="let empleado of empleados | filterSeach : filterSeach">
+            <div class="shadow mt-2 p-2 rounded bg-white">
+              <a [routerLink]="['/empleados/',empleado.id]" style="color: black; list-style: none;">              
+                <h4>{{empleado.username}}</h4>
+                <span><ion-icon name="calendar-outline"></ion-icon> {{empleado.setDate}}</span>             
+                <span *ngIf="empleado.pagosPendientes == 'true'" class="badge badge-danger ml-1">Pendiente por pagar</span>
+              </a>  
+            </div>
           </div>
         </div>
       </div>

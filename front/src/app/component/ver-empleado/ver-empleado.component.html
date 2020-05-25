@@ -8,7 +8,7 @@
     <div class="col-12 col-md-8">      
       <h2 *ngIf="empleado">
         {{empleado.username}} <br>
-        <small *ngIf="empleado.ubicacion">{{empleado.ubicacion}}</small>
+        <small *ngIf="empleado.ubicacion"><ion-icon name="calendar-outline"></ion-icon> {{empleado.ubicacion}}</small>
       </h2>
       <p (click)="deleteEmpleado()" class="btn btn-danger btn-sm"><span class="lnr lnr-cross-circle"></span> Eliminar Empleado</p>
     </div>
@@ -69,7 +69,7 @@
                       <div *ngIf="pago.telefono"><b>Telefono</b> {{pago.telefono}}  </div> 
                     </div>      
 
-                    <div class="mt-1 text-right">Fecha {{pago.setDate}}</div>
+                    <div class="mt-1 text-right"><ion-icon name="calendar-outline"></ion-icon> {{pago.setDate}}</div>
                   </div>
                 </div>
               </div>
