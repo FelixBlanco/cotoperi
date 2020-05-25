@@ -19,10 +19,11 @@ const httpOptionsAuth = {
   })
 };
 
+
 @Injectable({
   providedIn: 'root'
 })
-export class LoginService {
+export class AuthService {
 
   constructor(private router: HttpClient) { }
 
@@ -36,5 +37,5 @@ export class LoginService {
 
   _logout(){
     return this.router.get(`${environment.apiHost}/api/v1/logout`,httpOptionsAuth);
-  }
+  }  
 }

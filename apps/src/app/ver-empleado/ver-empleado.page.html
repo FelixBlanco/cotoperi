@@ -1,0 +1,98 @@
+<ion-header>
+  <ion-toolbar>    
+    <ion-title>      
+      <div *ngIf="empleado">
+        <a [routerLink]="['']"><ion-icon name="arrow-back-outline"></ion-icon></a>
+        {{empleado.username}}
+      </div>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+<ion-text>
+  <h2 *ngIf="empleado">     
+    <small *ngIf="empleado.ubicacion"><ion-icon name="calendar-outline"></ion-icon> {{empleado.ubicacion}}</small>
+  </h2>
+  <ion-button (click)="deleteEmpleado()" color='danger'> <span class="lnr lnr-cross-circle"></span> Eliminar Empleado </ion-button>  
+</ion-text>
+
+
+<ion-segment (ionChange)="segmentChanged($event)" value="javascript">
+  <ion-segment-button value="pagos">
+    <ion-label>Pagos</ion-label>
+  </ion-segment-button>
+  <ion-segment-button value="cuentas">
+    <ion-label>Cuentas</ion-label>
+  </ion-segment-button>
+</ion-segment>
+
+<div *ngIf='segmentValue == "pagos"'>
+  <ion-card *ngFor="let pago of pagos">
+    <ion-card-header>
+      <ion-card-subtitle>{{pago.titular}}</ion-card-subtitle>
+      <ion-card-title>{{pago.setMonto}}Bs</ion-card-title>
+    </ion-card-header>
+  
+    <ion-card-content>
+
+      <ion-chip  *ngIf="pago.is_pago == '0'">
+        <ion-label color="warning">Pendiente</ion-label>
+      </ion-chip>
+
+      <ion-chip *ngIf="pago.is_pago == '1'">
+        <ion-label color="success">Listo</ion-label>
+      </ion-chip>
+
+      <ion-chip *ngIf="pago.tipo">
+        <ion-label color="secondary">{{pago.tipo}}</ion-label>
+      </ion-chip>
+
+      <ion-chip *ngIf="pago.code">
+        <ion-label color="success">Codigo : {{pago.code}}</ion-label>
+      </ion-chip>
+
+      <ion-button (click)="deletePago(pago.id)" *ngIf="pago.is_pago == '0'" class="btn btn-danger btn-sm mt-1">Elimianr Pago</ion-button>
+
+      <form [formGroup]="formCancela" *ngIf="pago.is_pago == '0'">        
+        <ion-input type="text" placeholder="codigo de transferencia" formControlName="code"></ion-input>
+        <ion-button color='success' (click)="codePago(pago.id)">Listo</ion-button>        
+      </form>
+
+      <div>
+        <div><b>C. I.</b> {{pago.cedula}}</div> 
+        <div *ngIf="pago.nro"><b>Nro C.</b> {{pago.nro}} </div>                
+        <div *ngIf="pago.telefono"><b>Telefono</b> {{pago.telefono}}  </div> 
+      </div>      
+  
+      <div>
+        <ion-icon name="calendar-outline"></ion-icon> {{pago.setDate}}
+      </div>
+
+    </ion-card-content>
+  </ion-card>
+</div>
+
+<div *ngIf='segmentValue == "cuentas"'>
+  <ion-card *ngFor="let cuenta of cuentas">
+    <ion-card-header>
+      <ion-card-title>{{cuenta.titular}}</ion-card-title>
+      <ion-card-subtitle>
+        <span class="lnr lnr-pencil" (click)="editCuenta(cuenta)"></span> 
+        <span class="lnr lnr-cross-circle" (click)="deleteCuentas(cuenta.id)" style="margin-left: 2%;" ></span>
+      </ion-card-subtitle>
+    </ion-card-header>
+  
+    <ion-card-content>
+      <ion-text>
+        <p><span *ngIf="cuenta.cedula">Cedula identidad, {{cuenta.cedula}}</span> </p>
+        <p><span *ngIf="cuenta.nro">Nro Cuenta {{cuenta.nro}}</span></p>
+        <p><span *ngIf="cuenta.telefono">Nro Telefono {{cuenta.telefono}}</span>    </p>
+        <p><span *ngIf="cuenta.tipo">Tipo, {{cuenta.tipo}}</span></p>
+      </ion-text>
+    </ion-card-content>
+  </ion-card>
+</div>
+
+</ion-content>

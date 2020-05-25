@@ -31,8 +31,7 @@ export class LoginComponent implements OnInit {
       console.log(resp)      
       localStorage.setItem('_token',resp.access_token);
       location.reload()
-      this.isLoading = false
-      
+      this.isLoading = false      
     })
   }
 

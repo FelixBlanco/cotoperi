@@ -1,3 +1,25 @@
-<ion-app>
-  <ion-router-outlet></ion-router-outlet>
+<ion-app>    
+  <div *ngIf="isLogin">
+    <ion-router-outlet></ion-router-outlet>
+  </div>
+  
+  
+  <ion-content *ngIf="!isLogin">
+
+    <form [formGroup]="formLogin">
+      <ion-item>
+        <ion-label>Correo Electronico</ion-label>
+        <ion-input formControlName="email" placeholder="Email o Correo Electronico"></ion-input>
+      </ion-item>
+    
+      <ion-item>
+        <ion-label>Password</ion-label>
+        <ion-input formControlName="password" placeholder="ingrese el password"></ion-input>
+      </ion-item>
+      
+      <ion-button color="success" (click)="entrar()">Entrar</ion-button>
+    
+    </form>
+  </ion-content>
+
 </ion-app>

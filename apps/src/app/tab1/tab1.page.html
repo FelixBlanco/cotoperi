@@ -1,17 +1,27 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Tab 1
+      Empleados
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 1</ion-title>
-    </ion-toolbar>
-  </ion-header>
 
-  <app-explore-container name="Tab 1 page"></app-explore-container>
+  <ion-input [(ngModel)]="filterSeach" placeholder="Buscar empleados"></ion-input>  
+
+  <ion-list>
+    <ion-item *ngFor="let empleado of empleados |  filterEmpleadosPipe : filterSeach ">
+      <a [routerLink]="['/ver-empleado/',empleado.id]" style="color: black; list-style: none;">                      
+        <ion-text>
+          <h2>{{empleado.username}}</h2>
+          <small><span><ion-icon name="calendar-outline"></ion-icon> {{empleado.setDate}}</span> </small>          
+        </ion-text>
+        
+        <ion-chip *ngIf="empleado.pagosPendientes == 'true'">
+          <ion-label color="secondary">Pendiente por pagar</ion-label>
+        </ion-chip>                                  
+      </a>
+    </ion-item>
+  </ion-list>
 </ion-content>
