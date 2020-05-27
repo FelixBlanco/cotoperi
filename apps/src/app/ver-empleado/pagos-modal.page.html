@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar>    
+    <ion-title>          
+      <a [routerLink]="['']"><ion-icon name="arrow-back-outline"></ion-icon></a>
+      Nuevo Pago, {{empleados.username}}   
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="formAddPago">
+    <ion-item>
+      <ion-label>Cuentas</ion-label>
+      <ion-select placeholder="Seleciona las cuentas" formControlName="cuenta_id">
+        <ion-select-option *ngFor="let cuenta of cuentas" [value]="cuenta.id">
+          {{cuenta.titular}},
+          <span *ngIf="cuenta.nro">{{cuenta.nro}}</span> 
+          <span *ngIf="cuenta.telefono">{{cuenta.telefono}}</span>                     
+        </ion-select-option>        
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label>Monto</ion-label>
+      <ion-input placeholder='Ingrese monto' formControlName="monto"
+        [value]="formAddPago.get('monto').value | inputMoneda"
+      ></ion-input>
+    </ion-item>    
+    <ion-item>
+      <ion-label>Concepto</ion-label>
+      <ion-input placeholder='Ingrese concepto' formControlName="observacion"></ion-input>
+    </ion-item>    
+    <ion-button (click)="agregarPago()" color="success">Agregar</ion-button>
+  </form>
+</ion-content>

@@ -5,6 +5,10 @@ import { Tab1Service } from '../tab1/tab1.service';
 import { CuentasService } from '../services/cuentas.service';
 import { PagosService } from '../services/pagos.service';
 
+import { ModalController } from '@ionic/angular';
+import { cuentasModalPage } from './cuentas-modal.page';
+import { pagosModalPage } from './pagos-modal.page';
+
 @Component({
   selector: 'app-ver-empleado',
   templateUrl: './ver-empleado.page.html',
@@ -17,11 +21,9 @@ export class VerEmpleadoPage implements OnInit {
   cuentas   : any = []
   tipos     : any = []
 
-  formCuentas     : FormGroup
   formCuentasEdit : FormGroup
   formCancela     : FormGroup
-  formAddPago     : FormGroup
-
+  
   respIs : boolean = false // medimos si el usuario es nuetro o no 
 
   segmentValue : string = 'pagos'
@@ -32,15 +34,10 @@ export class VerEmpleadoPage implements OnInit {
     private _cuentas : CuentasService ,
     private fb : FormBuilder,
     private _pago : PagosService,
-    private router : Router
+    private router : Router,
+    public modalController: ModalController
   ) { 
-    this.formCuentas = this.fb.group({
-      tipo      : [''],
-      nro       : [''],
-      titular   : [''],
-      telefono  : [''],
-      cedula    : [''],
-    }) 
+
     
     this.formCuentasEdit = this.fb.group({
       id        : [''],
@@ -56,13 +53,6 @@ export class VerEmpleadoPage implements OnInit {
     this.formCancela = this.fb.group({
       code : ['']
     })     
-
-    this.formAddPago = this.fb.group({
-      'monto'       : [''],
-      'observacion' : ['Pago semana'],
-      'cuenta_id'   : [''],
-      'empleado_id' : [''],    
-    })
   }
 
   ngOnInit(): void {
@@ -83,7 +73,7 @@ export class VerEmpleadoPage implements OnInit {
         this.empleado = resp.empleado
         this.pagos = resp.pagos
         this.getCuentasEmpleados(id)
-        this.formAddPago.controls['empleado_id'].setValue(resp.empleado.id)      
+           
         this.respIs = true;        
       }else{
         this.respIs = false;
@@ -97,26 +87,7 @@ export class VerEmpleadoPage implements OnInit {
     })
   }
 
-
-  newCuenta(){
-    const dataValue = this.formCuentas.value
-    const data = {
-      'nro'       : dataValue.nro,
-      'titular'   :  dataValue.titular,
-      'telefono'  : dataValue.telefono,
-      'cedula'    : dataValue.cedula,
-      'empleado_id' : this.empleado.id,
-      'tipo_id'     : dataValue.tipo
-    }
-    this._cuentas.cuentasStore(data).subscribe((resp:any) => {
-      this.getCuentasEmpleados(this.empleado.id)
-      this.formCuentas.reset()      
-      
-    })
-  }
-
-  editCuenta(datos){
-    console.log(datos)
+  editCuenta(datos){    
    
     if(datos.tipo_id == 1){ // datos trasferencia
       
@@ -139,12 +110,7 @@ export class VerEmpleadoPage implements OnInit {
 
     }
 
-    
-  }
-
-  upgradeCuentas(){
-    this._cuentas.cuentasUpgrade(this.formCuentasEdit.value).subscribe((resp:any) => this.getCuentasEmpleados(resp.empleado_id) )
-
+    this.modalCuentas(true,this.formCuentasEdit.value);
   }
 
   codePago(idPago){
@@ -168,13 +134,6 @@ export class VerEmpleadoPage implements OnInit {
     })
   }
 
-  agregarPago(){
-   this._pago.addPagoEmpleados(this.formAddPago.value).subscribe((resp:any)=> {
-     this.getEmpleado(resp.empleado_id)     
-     this.formAddPago.controls['monto'].setValue('0')
-     this.formAddPago.controls['observacion'].setValue('pago semana')     
-   }) 
-  }
 
   deleteEmpleado(){
    this._empleado.deletesEmpleado(this.empleado.id).subscribe((resp:any) => {
@@ -186,4 +145,30 @@ export class VerEmpleadoPage implements OnInit {
     this.segmentValue = ev.detail.value
     this.pagos
   }
+
+
+  async modalCuentas(isEdit : boolean = false, dataEdit : any = [] ) {
+    const modal = await this.modalController.create({
+      component: cuentasModalPage,
+      cssClass: 'my-custom-class',
+      componentProps: {
+        'empleados' : this.empleado,
+        isEdit : isEdit,
+        dataEdit : dataEdit
+      }
+    });
+    return await modal.present();
+  }
+
+  async modalPagos(){
+    const modal = await this.modalController.create({
+      component: pagosModalPage,
+      cssClass: 'my-custom-class',
+      componentProps: {
+        empleados : this.empleado,        
+      }
+    });
+    return await modal.present();
+  }  
+
 }

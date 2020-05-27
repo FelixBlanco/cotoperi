@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-toolbar>    
+    <ion-title>      
+      <ion-icon name="arrow-back-outline" (click)="closeModal()"></ion-icon>      
+      Nueva cuenta
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <form [formGroup]="formCuentas">
+
+    <ion-item>
+      <ion-select placeholder="Selecionar el tipo"  formControlName="tipo">
+        <ion-select-option *ngFor="let tipo of tipos" [value]="tipo.id">{{tipo.tipo}}</ion-select-option>        
+      </ion-select>
+    </ion-item>
+    
+    <ion-item>
+      <ion-label>titular</ion-label>
+      <ion-input type="text" formControlName="titular"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>cedula</ion-label>
+      <ion-input type="text" formControlName="cedula"></ion-input>
+    </ion-item>
+    
+    <ion-item *ngIf="formCuentas.get('tipo').value == 1">
+      <ion-label>Nro Cuenta</ion-label>
+      <ion-input type="text" formControlName="nro"></ion-input>
+    </ion-item>
+    
+    <ion-item *ngIf="formCuentas.get('tipo').value == 2">
+      <ion-label>telefono</ion-label>
+      <ion-input type="text" formControlName="telefono"></ion-input>
+    </ion-item>    
+
+    <ion-button (click)="upgradeCuentas()" color="primary" *ngIf="isEdit">Editar</ion-button>
+    <ion-button (click)="newCuenta()" color="success" *ngIf="!isEdit">Agregar</ion-button>
+  </form>
+
+</ion-content>

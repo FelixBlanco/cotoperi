@@ -28,7 +28,13 @@
   </ion-segment-button>
 </ion-segment>
 
+<!-- Segment Pagos -->
 <div *ngIf='segmentValue == "pagos"'>
+  
+ <div style="padding : 10px; ">
+  <ion-button color="success" (click)="modalPagos()">Agregar</ion-button>
+ </div> 
+
   <ion-card *ngFor="let pago of pagos">
     <ion-card-header>
       <ion-card-subtitle>{{pago.titular}}</ion-card-subtitle>
@@ -74,7 +80,13 @@
   </ion-card>
 </div>
 
+<!-- Segment Cuentas -->
 <div *ngIf='segmentValue == "cuentas"'>
+
+ <div style="padding : 10px; ">
+  <ion-button color="success" (click)="modalCuentas()">Agregar</ion-button>
+ </div> 
+
   <ion-card *ngFor="let cuenta of cuentas">
     <ion-card-header>
       <ion-card-title>{{cuenta.titular}}</ion-card-title>

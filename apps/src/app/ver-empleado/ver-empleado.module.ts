@@ -7,6 +7,9 @@ import { IonicModule } from '@ionic/angular';
 import { VerEmpleadoPageRoutingModule } from './ver-empleado-routing.module';
 
 import { VerEmpleadoPage } from './ver-empleado.page';
+import { cuentasModalPage } from './cuentas-modal.page';
+import { pagosModalPage } from './pagos-modal.page';
+import { InputMonedaPipe } from '../input-moneda.pipe';
 
 @NgModule({
   imports: [
@@ -16,6 +19,7 @@ import { VerEmpleadoPage } from './ver-empleado.page';
     VerEmpleadoPageRoutingModule,
     ReactiveFormsModule
   ],
-  declarations: [VerEmpleadoPage]
+  declarations: [VerEmpleadoPage, cuentasModalPage, pagosModalPage, InputMonedaPipe],
+  entryComponents:[cuentasModalPage, pagosModalPage]
 })
 export class VerEmpleadoPageModule {}
