@@ -7,11 +7,13 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 2</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <app-explore-container name="Tab 2 page"></app-explore-container>
+  <ion-list>
+    <ion-item *ngFor="let lista_fecha of lista_fechas">
+      <a [routerLink]="['nominas/',lista_fecha.listaDate]">        
+        <ion-text>
+          <h3>{{lista_fecha.listaDate}}</h3>
+        </ion-text>
+      </a>
+    </ion-item>
+  </ion-list>
 </ion-content>

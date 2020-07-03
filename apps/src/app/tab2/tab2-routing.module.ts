@@ -1,12 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { Tab2Page } from './tab2.page';
+import { Tab2Page, ListaNominaListComponent } from './tab2.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: Tab2Page,
-  }
+    component: Tab2Page
+  },
+  {
+    path : 'nominas/:date"',
+    component : ListaNominaListComponent
+  }  
 ];
 
 @NgModule({

@@ -1,17 +1,35 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Pendientes
+      Pendientes {{pagos_pendientes.length}}
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 3</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <app-explore-container name="Tab 3 page"></app-explore-container>
+  <ion-card *ngFor="let pagos_pendiente of pagos_pendientes">
+    <ion-card-header>
+      <ion-card-title>{{pagos_pendiente.username}}</ion-card-title>
+      <ion-card-subtitle>{{pagos_pendiente.setMonto}} Bs</ion-card-subtitle>
+    </ion-card-header>
+         
+    <ion-card-content>
+      <ion-text>
+        <p>            
+          <b>Titular</b> {{pagos_pendiente.titular}} <br>
+          <span *ngIf="pagos_pendiente.cedula"><b>C. I.</b> {{pagos_pendiente.cedula}}</span> <br>
+          <span *ngIf="pagos_pendiente.nro"><b>Nro</b> {{pagos_pendiente.nro}}</span>   
+          <span *ngIf="pagos_pendiente.telefono"><b>Telefono</b> {{pagos_pendiente.telefono}}</span>   <br>
+          <span>Fecha {{pagos_pendiente.setDate}}</span>
+        </p>      
+      </ion-text>
+      <div>
+        <form [formGroup]="formCancela">          
+          <ion-input type="text" placeholder="codigo de transferencia" formControlName="code"></ion-input>
+          <ion-button color='success' (click)="codePago(pagos_pendiente.idPagos)">Agregar codigo</ion-button>          
+          <div *ngIf="isLoading" class="spinner-border" role="status"><span class="sr-only">Loading...</span></div>
+        </form>
+      </div>  
+    </ion-card-content>
+  </ion-card>
 </ion-content>
