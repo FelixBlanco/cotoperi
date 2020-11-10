@@ -16,6 +16,8 @@ import { LoginComponent } from './component/login/login.component';
 import { AboutComponent } from './component/about/about.component';
 import { FooterComponent } from './component/footer/footer.component';
 import { InputMonedaPipe } from './pipes/input-moneda.pipe';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -36,7 +38,7 @@ import { InputMonedaPipe } from './pipes/input-moneda.pipe';
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule, FormsModule, 
-    HttpClientModule
+    HttpClientModule, ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -27,6 +27,10 @@ export class AuthService {
 
   constructor(private router: HttpClient) { }
 
+  _categorias(){
+    return this.router.get('http://todoservicioapp.linkpc.net/TSapi/v1/index.php/categories',httpOptions);
+  }
+
   _entrar(data){    
     return this.router.post(`${environment.apiHost}/api/v1/login`,data, httpOptions);
   }

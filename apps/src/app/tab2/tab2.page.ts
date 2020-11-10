@@ -38,7 +38,7 @@ export class Tab2Page {
 })
 export class ListaNominaListComponent implements OnInit {
 
-  fechaSeach : any
+  fechaSeach : any  = null
   listaPagos : any = []
   isLoading : boolean = false
   totalNeto : any = null 
@@ -49,12 +49,14 @@ export class ListaNominaListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {    
-    this.fechaSeach = this.router.snapshot.params.date    
+    this.fechaSeach = this.router.snapshot.params.fecha   
+    // console.log(this.router.snapshot.params)
     console.log(this.fechaSeach)
     this.getSeachPagos(this.fechaSeach)
   }
-
+  
   getSeachPagos(date){    
+    
     this.isLoading = true
     this._pago.seachNomina(date).subscribe((resp:any) => {
       this.isLoading = false

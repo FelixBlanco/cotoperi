@@ -18,6 +18,12 @@ export class EmpleadosComponent implements OnInit {
   
   filterSeach : string = null // para filtrar
    
+  // Open Informacion
+  openEmpleado : boolean = false
+  empleado : any = []
+  cuentas : any = []
+  pagos : any = []
+
   constructor(
     private _empleados : EmpleadosService,
     private fb : FormBuilder
@@ -35,7 +41,7 @@ export class EmpleadosComponent implements OnInit {
   getEmpleado(){
     this.isLoadingGetEmpleados = true
     this._empleados.indexEmpleado().subscribe((resp:any) => {
-      this.empleados = resp
+      this.empleados = resp.empleados
       this.isLoadingGetEmpleados = false
     })
   }
@@ -47,5 +53,17 @@ export class EmpleadosComponent implements OnInit {
       this.isLoading = false
       this.formEmpleados.reset()      
     })
+  }
+
+  verEmpleado(data){
+    console.log(data)
+    this.openEmpleado = true
+    this.empleado = data
+    this.cuentas = data.cuentas
+    this.pagos = data.ultimo_dos_pagos
+  }
+
+  showLista(){
+    this.openEmpleado = false
   }
 }

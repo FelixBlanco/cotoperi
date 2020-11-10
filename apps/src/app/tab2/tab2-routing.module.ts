@@ -8,7 +8,7 @@ const routes: Routes = [
     component: Tab2Page
   },
   {
-    path : 'nominas/:date"',
+    path : 'nominas/:fecha"',
     component : ListaNominaListComponent
   }  
 ];

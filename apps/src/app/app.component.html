@@ -1,10 +1,11 @@
 <ion-app>    
-  <div *ngIf="isLogin">
+  <!-- <div *ngIf="isLogin">
+    {{categorias | json }}
     <ion-router-outlet></ion-router-outlet>
   </div>
+   -->
   
-  
-  <ion-content *ngIf="!isLogin">
+  <!-- <ion-content *ngIf="!isLogin"> -->
 
     <form [formGroup]="formLogin">
       <ion-item>
@@ -20,6 +21,14 @@
       <ion-button color="success" (click)="entrar()">Entrar</ion-button>
     
     </form>
-  </ion-content>
+
+    Categortia
+    {{categorias | json }}
+
+    <hr>
+    Error
+    {{errosCategoria | json}}
+
+  <!-- </ion-content> -->
 
 </ion-app>

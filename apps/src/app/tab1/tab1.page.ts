@@ -14,11 +14,11 @@ export class Tab1Page {
   isLoading : boolean = false
   isLoadingGetEmpleados  : boolean = false
   
-  filterSeach : string = null // para filtrar
-   
+  filterSeach : string = null // para filtrar  
+  
   constructor(
     private _empleados : Tab1Service,
-    private fb : FormBuilder
+    private fb : FormBuilder,    
   ) { 
     this.formEmpleados = this.fb.group({
       username : ['',[Validators.required]],
@@ -27,7 +27,7 @@ export class Tab1Page {
   }
 
   ngOnInit() {
-    this.getEmpleado()    
+    this.getEmpleado()      
   }
 
   getEmpleado(){    

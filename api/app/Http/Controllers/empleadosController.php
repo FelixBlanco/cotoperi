@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Empleado;
 use App\Pago;
 use Carbon\Carbon;
+use App\Cuenta;
 
 class empleadosController extends Controller
 {
@@ -26,9 +27,19 @@ class empleadosController extends Controller
                                 ])->count();
             $e->nro = $pagosPendientes;
             $e->pagosPendientes = ($pagosPendientes == 1) ? 'true' : 'false' ;
+            
+            $e->ultimo_dos_pagos = Pago::join('cuentas','cuentas.id','=','pagos.cuenta_id')
+                                    ->where('pagos.empleado_id',$e->id)
+                                    ->orderby('cuentas.id','desc')
+                                    ->limit(2)
+                                    ->get();
+
+            $e->cuentas = Cuenta::where('empleado_id',$e->id)->get();
         });
 
-        return response()->json($e);
+        return response()->json([
+            'empleados' => $e            
+        ]);
     }
 
     /**
@@ -73,9 +84,11 @@ class empleadosController extends Controller
             $response = 'true';
 
             $pagos = Pago::select(
-                'cuentas.id as idCuenta','cuentas.nro','cuentas.titular','cuentas.telefono','cuentas.cedula','cuentas.empleado_id','cuentas.tipo_id','cuentas.tipo_banco',
+                'cuentas.id as idCuenta','cuentas.nro','cuentas.titular','cuentas.telefono',
+                'cuentas.cedula','cuentas.empleado_id','cuentas.tipo_id','cuentas.tipo_banco',
                 'tipos.id as idTipos','tipos.tipo',
-                'pagos.id as id','pagos.cuenta_id','pagos.empleado_id','pagos.is_pago','pagos.code','pagos.observacion','pagos.monto','pagos.created_at as datePago'
+                'pagos.id as id','pagos.cuenta_id','pagos.empleado_id','pagos.is_pago',
+                'pagos.code','pagos.observacion','pagos.monto','pagos.created_at as datePago'
             )
                 ->join('cuentas','cuentas.id','=','pagos.cuenta_id')
                 ->join('tipos','tipos.id','=','cuentas.tipo_id')

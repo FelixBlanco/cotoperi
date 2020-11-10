@@ -1,7 +1,56 @@
-<div class="container">
+<!-- Show de Empleados -->
+<div class="container" *ngIf="openEmpleado">
   <div class="row justify-content-center">
     <div class="col-12 col-md-8">
-      <h3 class="p-2"><ion-icon name="people-outline"></ion-icon> Empleados ({{empleados.length}}) 
+      <i (click)="showLista()">Volver a lista empleados</i>
+      <h2 class="mb-2">Empleado : {{empleado.username}} </h2>
+      <a [routerLink]="['/empleados/',empleado.id]">Ver perfil completo</a>
+      <hr>
+
+      <h3 class="mt-2">Cuentas</h3>
+      <div class="row">
+        <div class="col-md-12 mb-2" *ngFor="let cuenta of cuentas">
+          <div class="shadow bg-white p-4 rounded">            
+            <p>Titular : {{cuenta.titular}}</p>
+            <p *ngIf="cuenta.telefono">Telefono : {{cuenta.telefono}}</p>
+            <p *ngIf="cuenta.nro">Nro Cuenta : {{cuenta.nro}}</p>
+            <p>Cedula I. : {{cuenta.cedula}}</p>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="mt-2">Ultimos Pagos</h3>
+      <div class="row">
+        <div class="col-md-12 mb-2" *ngFor="let pago of pagos">
+          <div class="shadow bg-white p-4 rounded">
+            <div class="row">
+              <div class="col-md-6">
+                <h5>Monto {{pago.monto}} Bs</h5>
+              </div>
+              <div class="col-md-6 text-right">
+                <h5>Estado de pago : 
+                  <span class="badge badge-warning" *ngIf="pago.is_pago == 0">Pendiente</span>
+                  <span class="badge badge-success" *ngIf="pago.is_pago == 1">Pago</span>                  
+                </h5>
+                <h5 *ngIf="pago.is_pago == 1">Codigo : {{pago.code}}</h5>
+              </div>
+            </div>      
+            <p *ngIf="pago.observacion">Observacion : {{pago.observacion}}</p>
+            <hr>
+            <p>{{pago.titular}}</p>
+            <p>{{pago.nro}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Lista de Empleados -->
+<div class="container" *ngIf="!openEmpleado">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-8">
+      <h3 class="p-2"><ion-icon name="people-outline"></ion-icon> Empleados 
       <button type="button" class="btn btn-success" data-toggle="modal" data-target="#staticBackdrop">
         <span class="lnr lnr-plus-circle"></span> 
       </button>
@@ -16,12 +65,12 @@
         
         <div class="row">
           <div class="col-md-6" *ngFor="let empleado of empleados | filterSeach : filterSeach">
-            <div class="shadow mt-2 p-2 rounded bg-white">
-              <a [routerLink]="['/empleados/',empleado.id]" style="color: black; list-style: none;">              
+            <div class="shadow mt-2 p-2 rounded bg-white" (click)="verEmpleado(empleado)">
+              <!-- <a [routerLink]="['/empleados/',empleado.id]" style="color: black; list-style: none;">               -->
                 <h4>{{empleado.username}}</h4>
                 <span><ion-icon name="calendar-outline"></ion-icon> {{empleado.setDate}}</span>             
                 <span *ngIf="empleado.pagosPendientes == 'true'" class="badge badge-danger ml-1">Pendiente por pagar</span>
-              </a>  
+              <!-- </a>   -->
             </div>
           </div>
         </div>

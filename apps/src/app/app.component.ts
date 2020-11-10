@@ -18,6 +18,9 @@ export class AppComponent {
   isLoading : boolean = false
   formLogin : FormGroup
 
+  categorias : any = []
+  errosCategoria : any = []
+  
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
@@ -35,6 +38,10 @@ export class AppComponent {
 
   ngOnInit(){
     this.getUser();
+    this._login._categorias().subscribe(
+        (resp) => this.categorias = resp ,
+        (errors) => this.errosCategoria = errors
+      )  
   }
 
   getUser(){
