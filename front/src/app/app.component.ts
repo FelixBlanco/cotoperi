@@ -17,8 +17,7 @@ export class AppComponent {
   }
 
   getUser(){
-    this._login._user().subscribe((resp:any) => {
-      console.log(resp)
+    this._login._user().subscribe((resp:any) => {      
       if(resp.isSession){
         this.isSession = resp.isSession
       }else{
@@ -26,13 +25,4 @@ export class AppComponent {
       }
     })
   }
-
-
-  logout(){
-    this._login._logout().subscribe((resp:any) => {
-      console.log(resp);
-      location.reload()
-    })
-  }
-
 }

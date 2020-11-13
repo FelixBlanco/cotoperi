@@ -18,6 +18,7 @@ import { FooterComponent } from './component/footer/footer.component';
 import { InputMonedaPipe } from './pipes/input-moneda.pipe';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { BodyComponent } from './component/body/body.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { environment } from '../environments/environment';
     LoginComponent,
     AboutComponent,
     FooterComponent,
-    InputMonedaPipe
+    InputMonedaPipe,
+    BodyComponent
   ],
   imports: [
     BrowserModule,

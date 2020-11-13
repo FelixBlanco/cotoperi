@@ -7,17 +7,19 @@ import { PorCancelarComponent } from './component/por-cancelar/por-cancelar.comp
 import { VerEmpleadoComponent } from './component/ver-empleado/ver-empleado.component';
 import { ListaNominaComponent, ListaNominaListComponent } from './component/lista-nomina/lista-nomina.component';
 import { AboutComponent } from './component/about/about.component';
+import { BodyComponent } from './component/body/body.component';
 
 const routes: Routes = [
-  { path : '', component : EmpleadosComponent },
-  { path : 'empleados', component : EmpleadosComponent},
-  { path : "empleados/:idEmpleado", component : VerEmpleadoComponent },
-  { path : 'por-cancelar', component : PorCancelarComponent },
-  { path : 'pagos', component : PagosComponent },
-  { path : 'nominas', component : ListaNominaComponent },
-  { path : 'nominas/:date', component : ListaNominaListComponent },
-  { path : 'acerca', component : AboutComponent}
-
+  { path : '', component : BodyComponent, children : [
+    { path : '', component : EmpleadosComponent },
+    { path : 'empleados', component : EmpleadosComponent},
+    { path : "empleados/:idEmpleado", component : VerEmpleadoComponent },
+    { path : 'por-cancelar', component : PorCancelarComponent },
+    { path : 'pagos', component : PagosComponent },
+    { path : 'nominas', component : ListaNominaComponent },
+    { path : 'nominas/:date', component : ListaNominaListComponent },
+    { path : 'acerca', component : AboutComponent}
+  ]}
 ];
 
 @NgModule({

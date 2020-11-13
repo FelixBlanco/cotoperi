@@ -3,20 +3,6 @@
   <app-login *ngIf="!isSession"></app-login> 
   
   <div *ngIf="isSession">  
-    <div class="container my-4">
-      <div class="row justify-content-center">
-        <div class="col-md-8">
-          <h1 class="text-center" style="color: rgb(20, 145, 41); text-shadow: 0px 1px 1px black;">Cotoperices</h1>
-          <nav class="nav">
-            <a class="nav-link" [routerLink]="['empleados']" [routerLinkActive]="['active']"> <ion-icon name="people-outline"></ion-icon> Empleados <span class="sr-only">(current)</span></a>
-            <a class="nav-link" [routerLink]="['nominas']"  [routerLinkActive]="['active']"> <ion-icon name="calendar-outline"></ion-icon> Lista Nomina</a>
-            <a class="nav-link" [routerLink]="['por-cancelar']" [routerLinkActive]="['active']"><ion-icon name="warning-outline"></ion-icon> Pendientes</a> 
-            <a class="nav-link" [routerLink]="['/acerca']" [routerLinkActive]="['active']"><ion-icon name="newspaper-outline"></ion-icon> Acerca</a> 
-            <a class="nav-link" (click)="logout()"><ion-icon name="lock-closed-outline"></ion-icon> Salir</a> 
-          </nav>                    
-        </div>
-      </div>
-    </div>
     <router-outlet></router-outlet>
   </div>  
 </div>

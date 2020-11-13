@@ -25,14 +25,19 @@ class empleadosController extends Controller
                                     ['empleado_id',$e->id],
                                     ['is_pago','0']                
                                 ])->count();
+
             $e->nro = $pagosPendientes;
             $e->pagosPendientes = ($pagosPendientes == 1) ? 'true' : 'false' ;
             
-            $e->ultimo_dos_pagos = Pago::join('cuentas','cuentas.id','=','pagos.cuenta_id')
-                                    ->where('pagos.empleado_id',$e->id)
-                                    ->orderby('cuentas.id','desc')
-                                    ->limit(2)
-                                    ->get();
+            $e->ultimo_dos_pagos = Pago::select(
+                'pagos.id as idPago','pagos.cuenta_id','pagos.empleado_id','pagos.is_pago','pagos.code','pagos.observacion','pagos.monto',
+                'cuentas.id as idCuenta','cuentas.nro','cuentas.titular','cuentas.telefono','cuentas.cedula','cuentas.empleado_id','cuentas.tipo_id','cuentas.tipo_banco'
+                )
+                ->join('cuentas','cuentas.id','=','pagos.cuenta_id')
+                ->where('pagos.empleado_id',$e->id)
+                ->orderby('pagos.id','desc')
+                ->limit(2)
+                ->get();
 
             $e->cuentas = Cuenta::where('empleado_id',$e->id)->get();
         });

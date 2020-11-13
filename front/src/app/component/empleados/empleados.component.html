@@ -4,7 +4,7 @@
     <div class="col-12 col-md-8">
       <i (click)="showLista()">Volver a lista empleados</i>
       <h2 class="mb-2">Empleado : {{empleado.username}} </h2>
-      <a [routerLink]="['/empleados/',empleado.id]">Ver perfil completo</a>
+      <a [routerLink]="['empleados/',empleado.id]">Ver perfil completo</a>
       <hr>
 
       <h3 class="mt-2">Cuentas</h3>
@@ -39,6 +39,15 @@
             <hr>
             <p>{{pago.titular}}</p>
             <p>{{pago.nro}}</p>
+            <hr>
+            <div class="mt-2">
+              <form [formGroup]="formCancela" *ngIf="pago.is_pago == '0'">
+                <div class="form-inline">
+                  <input type="text" class="form-control" placeholder="codigo de transferencia" formControlName="code"> 
+                  <button class="btn btn-success" (click)="codePago(pago.idPago)">Agregar codigo</button>
+                </div>                  
+              </form>                
+            </div>            
           </div>
         </div>
       </div>
@@ -65,7 +74,7 @@
         
         <div class="row">
           <div class="col-md-6" *ngFor="let empleado of empleados | filterSeach : filterSeach">
-            <div class="shadow mt-2 p-2 rounded bg-white" (click)="verEmpleado(empleado)">
+            <div class="shadow mt-2 p-4 rounded bg-white" (click)="verEmpleado(empleado)" style="height: 120px;">
               <!-- <a [routerLink]="['/empleados/',empleado.id]" style="color: black; list-style: none;">               -->
                 <h4>{{empleado.username}}</h4>
                 <span><ion-icon name="calendar-outline"></ion-icon> {{empleado.setDate}}</span>             
