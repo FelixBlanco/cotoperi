@@ -59,7 +59,13 @@ class pagosController extends Controller
         $p->is_pago     = 0;
         $p->save();
 
-        return response()->json($p);
+
+        $ultimos_pagos = Pago::ultimosPagos($idEmpleado);
+
+        return response()->json([
+            'nuevo_pago' => $p,
+            'ultimos_pagos' => $ultimos_pagos
+        ],200);
     }
 
     public function codePago(Request $request){        

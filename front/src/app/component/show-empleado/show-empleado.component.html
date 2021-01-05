@@ -1,0 +1,88 @@
+<div class="container mt-5">
+
+  <div class="row">
+    <div class="col-md-12">
+      <p class="p-2" (click)="cShowEmpleado()"> <ion-icon name="caret-back-outline"></ion-icon>Volver a la lista empleados</p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+      <div class="p-3 shadow bg-white rounded">
+        <h3>{{dataEmpleado.username}}</h3>
+        <p>Ubicacion : {{dataEmpleado.ubicacion}}</p>
+      </div>
+    </div>  
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-md-4">
+      <h3 class="mt-2">
+        Cuentas Bancarias 
+        <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#nuevaCuenta">
+          <ion-icon name="add-circle-outline"></ion-icon>
+        </button>
+      </h3>
+      <!-- Cuentass -->
+      <div class="row">
+        <div class="col-md-12 mb-2" *ngFor="let cuenta of cuentas">
+          <div class="shadow bg-white p-4 rounded">            
+            <p>Titular : {{cuenta.titular}}</p>
+            <p *ngIf="cuenta.telefono">Telefono : {{cuenta.telefono}}</p>
+            <p *ngIf="cuenta.nro">Nro Cuenta : {{cuenta.nro}}</p>
+            <p>Cedula I. : {{cuenta.cedula}}</p>
+          </div>
+        </div>      
+      </div>
+    </div>
+
+    <!-- Ultimos Pagos -->
+    <div class="col-md-8">
+      <h3>Ultimos Pagos 
+        <button class="btn btn-sm btn-success" data-toggle="modal" data-target="#addPagos">
+          <ion-icon name="add-circle-outline"></ion-icon>
+        </button>
+      </h3>
+      <div class="row">
+        <div class="col-md-6 mb-2" *ngFor="let pago of ultimos_pagos">
+          <div class="shadow bg-white p-4 rounded">
+            <p>Estado del pago : 
+              <span class="badge badge-warning" *ngIf="pago.is_pago == 0">Pendiente</span>
+              <span class="badge badge-success" *ngIf="pago.is_pago == 1">Pago</span>                  
+            </p>
+            <p *ngIf="pago.is_pago == 1"><b>Codigo confirmacion</b> : {{pago.code}}</p>
+            <hr>
+            <p><b>Monto</b> {{pago.monto}} Bs</p>
+            <p>Monto {{pago.datePago | date}}</p>
+            <hr>
+            <p *ngIf="pago.observacion">Observacion : {{pago.observacion}}</p>
+            <hr>
+            <h4>Cuenta a transferir</h4>
+            <p>{{pago.titular}}</p>
+            <p>{{pago.nro}}</p>    
+            <hr>        
+            <div class="mt-2" *ngIf="pago.is_pago == '0'">
+              <form [formGroup]="formCancela">
+                <div class="form-inline">
+                  <input type="text" class="form-control" placeholder="codigo de transferencia" formControlName="code"> 
+                  <button class="btn btn-success" (click)="codePago(pago.idPago)">
+                    <ion-icon name="checkmark-circle-outline"></ion-icon>
+                  </button>
+                </div>                  
+              </form>                
+            </div>            
+          </div>
+        </div>          
+      </div>
+    </div>
+</div>
+
+<app-cuentas
+  [idEmpleado]="dataEmpleado.id"
+  (aCuenta)="addCuenta($event)"
+></app-cuentas>
+
+<app-agregar-pagos
+  [idEmpleado]="dataEmpleado.id"  
+  [cuentas]="cuentas"
+  (aUltimosPagos)="setUltimosPagos($event)"
+></app-agregar-pagos>

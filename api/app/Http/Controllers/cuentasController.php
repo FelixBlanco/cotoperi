@@ -10,7 +10,7 @@ class cuentasController extends Controller
     public function store(Request $request){
         $c = new Cuenta($request->all());
         $c->save();
-        return response()->json();        
+        return response()->json($c);        
     }
 
     public function index(){

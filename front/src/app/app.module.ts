@@ -19,6 +19,11 @@ import { InputMonedaPipe } from './pipes/input-moneda.pipe';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { BodyComponent } from './component/body/body.component';
+import {NgxPaginationModule} from 'ngx-pagination';
+import { NewEmpleadoComponent } from './component/new-empleado/new-empleado.component';
+import { ShowEmpleadoComponent } from './component/show-empleado/show-empleado.component';
+import { CuentasComponent } from './component/cuentas/cuentas.component';
+import { AgregarPagosComponent } from './component/agregar-pagos/agregar-pagos.component';
 
 @NgModule({
   declarations: [
@@ -34,13 +39,20 @@ import { BodyComponent } from './component/body/body.component';
     AboutComponent,
     FooterComponent,
     InputMonedaPipe,
-    BodyComponent
+    BodyComponent,
+    NewEmpleadoComponent,
+    ShowEmpleadoComponent,
+    CuentasComponent,
+    AgregarPagosComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule, FormsModule, 
-    HttpClientModule, ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+    HttpClientModule, 
+    NgxPaginationModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }  
+    )
   ],
   providers: [],
   bootstrap: [AppComponent],

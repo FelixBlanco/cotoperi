@@ -13,33 +13,21 @@ import { PagosService } from 'src/app/services/pagos.service';
 export class EmpleadosComponent implements OnInit {
 
   empleados : any = []
-  formEmpleados : FormGroup
+  
   isLoading : boolean = false
   isLoadingGetEmpleados  : boolean = false
+
+  openEmpleado : boolean = false  // show Empleado
   
   filterSeach : string = null // para filtrar
-   
-  // Open Informacion
-  openEmpleado : boolean = false
-  empleado  : any = []
-  cuentas   : any = []
-  pagos     : any = []
+  pageSize : number = 15  
+  p: number = 1;  
 
-  formCancela : FormGroup
+  empleado : any = []
 
   constructor(
-    private _empleados : EmpleadosService,
-    private fb : FormBuilder,
-    private _pago : PagosService,
+    private _empleados : EmpleadosService,    
   ) { 
-    this.formEmpleados = this.fb.group({
-      username : ['',[Validators.required]],
-      ubicacion : ['San Felix']
-    })
-
-    this.formCancela = this.fb.group({
-      code : ['']
-    })     
 
   }
 
@@ -55,48 +43,28 @@ export class EmpleadosComponent implements OnInit {
       this.isLoadingGetEmpleados = false
       
       if(isUpdate){
-        this.verEmpleado([], true, idEmpleado)
+        // this.verEmpleado([], true, idEmpleado)
       }
 
     })
   }
 
-  newEmpleado(){
-    this.isLoading = true
-    this._empleados.storeEmpleado(this.formEmpleados.value).subscribe((resp:any) => {
-      this.getEmpleado();
-      this.isLoading = false
-      this.formEmpleados.reset()      
+  showEmpleado(data){
+    console.log('empleado',data)    
+    this.toggleShowEmpleado(true)
+    this.empleado = data
+  }
+
+  toggleShowEmpleado(is){    
+    this.openEmpleado = is
+  }
+
+
+  setPagoPendiente(e){
+    console.log('e public',e)
+    this.empleado.find((e) => {
+      e.pagosPendientes = (e.id == e)? true : false;
     })
   }
 
-  verEmpleado(data, isUpdate: boolean = false , idEmpleado: any = 'null'){ 
-    
-    this.openEmpleado = true
-
-    if(isUpdate == true){      
-      const setData = this.empleados.find((e) => e.id == idEmpleado )
-      this.empleado = setData
-      this.cuentas = setData.cuentas
-      this.pagos = setData.ultimo_dos_pagos
-    }else{      
-      this.empleado = data
-      this.cuentas = data.cuentas
-      this.pagos = data.ultimo_dos_pagos
-    }  
-  }
-
-  showLista(){
-    this.openEmpleado = false
-  }
-
-  codePago(idPago){
-    const formData = this.formCancela.value
-    const info = { code : formData.code, idPago : idPago }    
-    this._pago.pagar(info).subscribe((resp:any) => {      
-      this.formCancela.reset();
-      this.openEmpleado = false
-      this.getEmpleado(true,resp.empleado_id)       
-    })
-  }
 }

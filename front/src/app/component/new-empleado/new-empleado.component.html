@@ -1,0 +1,28 @@
+<div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Nuevo empleado</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="formEmpleados">
+          <div class="form-group">
+            <label for="">Nombre y Apellidos</label>
+            <input type="text" class="form-control" formControlName="username">
+          </div>
+          <div class="form-group">
+            <label for="">Ubicacion</label>
+            <input type="text" class="form-control" formControlName="ubicacion" placeholder="Ubicacion, es opcional">
+          </div>
+        </form>                
+      </div>
+      <div class="modal-footer">        
+        <div *ngIf="isLoading" class="spinner-border" role="status"><span class="sr-only">Loading...</span></div>
+        <button type="button" *ngIf="!isLoading" class="btn btn-primary" (click)="newEmpleado()">Listo</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,120 +1,66 @@
-<!-- Show de Empleados -->
-<div class="container" *ngIf="openEmpleado">
-  <div class="row justify-content-center">
-    <div class="col-12 col-md-8">
-      <i (click)="showLista()">Volver a lista empleados</i>
-      <h2 class="mb-2">Empleado : {{empleado.username}} </h2>
-      <a [routerLink]="['empleados/',empleado.id]">Ver perfil completo</a>
-      <hr>
-
-      <h3 class="mt-2">Cuentas</h3>
-      <div class="row">
-        <div class="col-md-12 mb-2" *ngFor="let cuenta of cuentas">
-          <div class="shadow bg-white p-4 rounded">            
-            <p>Titular : {{cuenta.titular}}</p>
-            <p *ngIf="cuenta.telefono">Telefono : {{cuenta.telefono}}</p>
-            <p *ngIf="cuenta.nro">Nro Cuenta : {{cuenta.nro}}</p>
-            <p>Cedula I. : {{cuenta.cedula}}</p>
-          </div>
-        </div>
-      </div>
-
-      <h3 class="mt-2">Ultimos Pagos</h3>
-      <div class="row">
-        <div class="col-md-12 mb-2" *ngFor="let pago of pagos">
-          <div class="shadow bg-white p-4 rounded">
-            <div class="row">
-              <div class="col-md-6">
-                <h5>Monto {{pago.monto}} Bs</h5>
-              </div>
-              <div class="col-md-6 text-right">
-                <h5>Estado de pago : 
-                  <span class="badge badge-warning" *ngIf="pago.is_pago == 0">Pendiente</span>
-                  <span class="badge badge-success" *ngIf="pago.is_pago == 1">Pago</span>                  
-                </h5>
-                <h5 *ngIf="pago.is_pago == 1">Codigo : {{pago.code}}</h5>
-              </div>
-            </div>      
-            <p *ngIf="pago.observacion">Observacion : {{pago.observacion}}</p>
-            <hr>
-            <p>{{pago.titular}}</p>
-            <p>{{pago.nro}}</p>
-            <hr>
-            <div class="mt-2">
-              <form [formGroup]="formCancela" *ngIf="pago.is_pago == '0'">
-                <div class="form-inline">
-                  <input type="text" class="form-control" placeholder="codigo de transferencia" formControlName="code"> 
-                  <button class="btn btn-success" (click)="codePago(pago.idPago)">Agregar codigo</button>
-                </div>                  
-              </form>                
-            </div>            
-          </div>
-        </div>
-      </div>
-    </div>
+<!-- Lista de Usuarios -->
+<div *ngIf="!openEmpleado">
+  <div class="spinner-border justify-content-center" *ngIf="isLoadingGetEmpleados" role="status">
+    <span class="sr-only">Loading...</span>
   </div>
-</div>
-
-<!-- Lista de Empleados -->
-<div class="container" *ngIf="!openEmpleado">
-  <div class="row justify-content-center">
-    <div class="col-12 col-md-8">
-      <h3 class="p-2"><ion-icon name="people-outline"></ion-icon> Empleados 
-      <button type="button" class="btn btn-success" data-toggle="modal" data-target="#staticBackdrop">
-        <span class="lnr lnr-plus-circle"></span> 
-      </button>
-      </h3>
-      
-      <div class="spinner-border" *ngIf="isLoadingGetEmpleados" role="status"><span class="sr-only">Loading...</span></div>
-      
-      <div *ngIf="!isLoadingGetEmpleados">        
-        <div class="form-group">
-          <input type="text" [(ngModel)]="filterSeach" placeholder="Buscar empleados" class="form-control">
-        </div>
-        
-        <div class="row">
-          <div class="col-md-6" *ngFor="let empleado of empleados | filterSeach : filterSeach">
-            <div class="shadow mt-2 p-4 rounded bg-white" (click)="verEmpleado(empleado)" style="height: 120px;">
-              <!-- <a [routerLink]="['/empleados/',empleado.id]" style="color: black; list-style: none;">               -->
-                <h4>{{empleado.username}}</h4>
-                <span><ion-icon name="calendar-outline"></ion-icon> {{empleado.setDate}}</span>             
-                <span *ngIf="empleado.pagosPendientes == 'true'" class="badge badge-danger ml-1">Pendiente por pagar</span>
-              <!-- </a>   -->
+  
+  <div class="container mt-5" *ngIf="!isLoadingGetEmpleados">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="shadow bg-white p-2">
+          <div class="row mt-2">
+            <div class="col-md-6">
+              <h2 class="text-center">Empleados {{empleados.length}}</h2>
+            </div>
+            <div class="col-md-6">
+              <input type="text" [(ngModel)]="filterSeach" placeholder="Buscar empleados" class="form-control">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12 text-right p-2">
+              <button class="btn btn-success btn-sm mr-2"  data-toggle="modal" data-target="#staticBackdrop">Agregar empleado</button>
+            </div>
+          </div>
+          <div class="mt-2">
+            <table class="table table-hover text-center">
+              <tr>
+                <th>Empleado</th>
+                <th>Fecha</th>
+                <th></th>
+              </tr>
+              <tr *ngFor="let empleado of empleados | filterSeach : filterSeach,  paginate: { itemsPerPage: pageSize, currentPage: p }"
+                (click)="showEmpleado(empleado)"
+              >
+                <td>{{empleado.username}}</td>
+                <td>
+                  <ion-icon name="calendar-outline"></ion-icon> 
+                  {{empleado.created_at | date }}
+                </td>
+                <td class="text-right">
+                  <span *ngIf="empleado.pagosPendientes == 'true'" class="badge badge-danger ml-1">Pago pendiente</span>
+                  <ion-icon name="chevron-forward-outline"></ion-icon>
+                </td>
+              </tr>        
+            </table>
+            
+            <div class="text-center">
+              <pagination-controls (pageChange)="p = $event"></pagination-controls>
             </div>
           </div>
         </div>
+  
       </div>
-    </div>    
+  
+    </div>  
   </div>
 </div>
 
+<app-show-empleado 
+  *ngIf="openEmpleado" 
+  [dataEmpleado]="empleado"
+  (closeShowEmpleado)="toggleShowEmpleado($event)"
+  (changePagoPendiente)="setPagoPendiente($event)"
+  ></app-show-empleado>
 
-<!-- Modal Empleado -->
-<div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="staticBackdropLabel">Nuevo empleado</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form [formGroup]="formEmpleados">
-          <div class="form-group">
-            <label for="">Nombre y Apellidos</label>
-            <input type="text" class="form-control" formControlName="username">
-          </div>
-          <div class="form-group">
-            <label for="">Ubicacion</label>
-            <input type="text" class="form-control" formControlName="ubicacion" placeholder="Ubicacion, es opcional">
-          </div>
-        </form>                
-      </div>
-      <div class="modal-footer">        
-        <div *ngIf="isLoading" class="spinner-border" role="status"><span class="sr-only">Loading...</span></div>
-        <button type="button" *ngIf="!isLoading" class="btn btn-primary" (click)="newEmpleado()">Listo</button>
-      </div>
-    </div>
-  </div>
-</div>
+<app-new-empleado></app-new-empleado>
+           
